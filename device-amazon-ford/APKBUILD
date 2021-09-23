@@ -1,0 +1,30 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-amazon-ford
+pkgdesc="Amazon Fire 7 (2015)"
+pkgver=0.1
+pkgrel=2
+url="https://postmarketos.org"
+license="MIT"
+arch="armv7"
+options="!check !archcheck"
+depends="
+	linux-amazon-ford
+	mesa-dri-gallium
+	mkbootimg
+	postmarketos-base
+	msm-fb-refresher
+"
+makedepends="devicepkg-dev"
+source="deviceinfo"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+b974953614b27d9679a8f6a9936aae66e22a32c81d81251ae915d63d5afa48be7a357afc346c5ea4ce97855ecd40d0a30e6f888804c805322ac9c0e070a4b228  deviceinfo
+"
