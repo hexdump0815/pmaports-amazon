@@ -1,0 +1,24 @@
+diff --git a/include/mach/charging.h b/include/mach/charging.h
+index a6c2a4cb..49379bba 100644
+--- a/include/mach/charging.h
++++ b/include/mach/charging.h
+@@ -43,12 +43,13 @@
+ #define BAT_LOG_CRTI 1
+ #define BAT_LOG_FULL 2
+ 
+-#define battery_xlog_printk(num, fmt, args...) \
+-  do { \
+-    if (Enable_BATDRV_LOG >= (int)num) { \
+-      pr_notice(fmt, ##args); \
+-    } \
+-  } while (0)
++//#define battery_xlog_printk(num, fmt, args...) \
++//  do { \
++//    if (Enable_BATDRV_LOG >= (int)num) { \
++//      pr_notice(fmt, ##args); \
++//    } \
++//  } while (0)
++#define battery_xlog_printk(num, fmt, args...) do {} while (0)
+ 
+ 
+ /* ============================================================ */

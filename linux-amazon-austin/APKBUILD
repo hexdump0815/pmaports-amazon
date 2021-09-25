@@ -1,0 +1,75 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: https://github.com/NixOS/mobile-nixos/blob/master/devices/amazon-austin/kernel/config.armv7
+
+pkgname=linux-amazon-austin
+pkgver=3.10.54
+pkgrel=3
+pkgdesc="Amazon Fire 7 (2017) kernel"
+arch="armv7"
+_carch="arm"
+_flavor="amazon-austin"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev devicepkg-dev gcc4 xz"
+
+# Compiler: GCC 4 (doesn't compile with versions above GCC 4)
+if [ "${CC:0:5}" != "gcc4-" ]; then
+	CC="gcc4-$CC"
+	HOSTCC="gcc4-gcc"
+	CROSS_COMPILE="gcc4-$CROSS_COMPILE"
+fi
+
+# Source from amazon stock kernel
+_repository="linux-amazon-mediatek-mt8127-kernel-source"
+_commit="deea435cab1e86162df968d58d83839a8f733e01"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
+	$_config
+	fix-host-card-inserted.patch
+	silence-hotplug-logspam.patch
+	silence-power-logspam.patch
+	silence-battery-logspam.patch
+	silence-mtkfb-logspam.patch
+	silence-usb-logspam.patch
+	silence-time-logspam.patch
+	silence-i2c-logspam.patch
+	silence-cmb-logspam.patch
+	silence-tz-logspam.patch
+	silence-thermal-logspam.patch
+	silence-vsync-logspam.patch
+"
+builddir="$srcdir/$_repository-$_commit"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
+}
+
+sha512sums="
+6db8dd93ded25d0041f60c13b804e6ddc6539aa791c082111a4af61abb0ec7ea22aa7031e42053f96fe539099f6828fd9e27b52ab61faaaa19e45c475de9675b  linux-amazon-austin-deea435cab1e86162df968d58d83839a8f733e01.tar.gz
+cb62e9f5326d8d329616cfd06d39c477618b3bdf57807f0dd4497e4251dea339be9a3d5f6950b6e2f1185f3d7a6cf6691997be07b1ddb9c603bb8f86cc0770a4  config-amazon-austin.armv7
+bfd9134f02059fdc948890a0f923f9c681e209b9ada6025eaa61e04348f69c9e155a094c929e5d6842c09d5782cbb98de3d004fee0ce40767ff954f4499e60fa  fix-host-card-inserted.patch
+00220241cf8d3b9fa692af6305b398e18cf138caa4bc1c3be969c2acd9381778544ff687337efe958bc33985b26a333c5327b6c419ddee44d284e0ae393fd270  silence-hotplug-logspam.patch
+fc3529031cda24670d668fc8ad0e1cbd745db6a65b28df506169e49b6918de0fa81b6921a1f51271eb826a58d4e2c6c3292d46908913b3c8e70f790f3a82da76  silence-power-logspam.patch
+db86c055c4de5355f6876e3cc9893e5a2ff5ff1802695804fb840a83feacea797e94a01283d147cb51c13561cf285aa0df54c0116042101be325aaf275222eec  silence-battery-logspam.patch
+fde906379c3ab5e7b1e9f6036c77877a07342e0b9f508d6dd2e084862b8fc95122180fac82f9dbd85f4e2a401ce4d440aae0f3b6743deff332926f0bd2898554  silence-mtkfb-logspam.patch
+35889da4c5bef7defd7dcab9497bcc98b0e5998de61a1f98e2d4ac5bd8aec47266fb6979e1cddcc9a94b20b43a6cc893dd14dfbc48d7212c2fc8425f16c376be  silence-usb-logspam.patch
+b3b037b2145c079c95c06781604fa2a874a2c547137f96704d861f5f591069afb6e02869b7fedaca73aff5e7fb6b2449b2a6434aedc80ff36670acd2bc51155d  silence-time-logspam.patch
+9eb4e60f988a289385a4ee0eb94573dd0cbd249c8236eb695b6637322a1a3826dc90728c5f939d51c3320ec3fb2b1eea252c28e34cdfd307db8807dc9f9080a3  silence-i2c-logspam.patch
+56f77c21867325e461d9d8db2400d3a521d682ee10f7d58bef1cc4d50e3648db68be7e40ff9ba67d75ef9832e8914867540381fb38e2108ac5906964536980f8  silence-cmb-logspam.patch
+bac2c215a7a5329e7e0cc6cddc901d7144050a66e1204b4de2bec732a33b2c18bb45732e7b41f62ef5dfc0a6db3518d3870c17e59c13edaf64a5b64b9cbda821  silence-tz-logspam.patch
+d67f2b902c8ce1797ccdce053c95a97adbdc20c49a88d8f257ab4bdd7a643242fffcbba31aad5d3cb91580c3c3351a4fe159041304fe531e857ebfb84aedc962  silence-thermal-logspam.patch
+3868047c589f0c3efc2b94aece0c46a55d0798650ad1bf8bc4f2328c4a5daaf071d699048edf6a6e0735407d84eb48688c7ade18b439cff1f09ac33087e7170a  silence-vsync-logspam.patch
+"

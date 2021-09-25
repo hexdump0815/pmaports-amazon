@@ -1,0 +1,14 @@
+diff --git a/arch/arm/mach-mt8127/include/mach/hotplug.h b/arch/arm/mach-mt8127/include/mach/hotplug.h
+index fa139f2a..413b7dbc 100644
+--- a/arch/arm/mach-mt8127/include/mach/hotplug.h
++++ b/arch/arm/mach-mt8127/include/mach/hotplug.h
+@@ -11,7 +11,8 @@
+ #define HOTPLUG_LOG_WITH_XLOG                           1
+ #define HOTPLUG_LOG_WITH_PRINTK                         2
+ 
+-#define HOTPLUG_LOG_PRINT                               HOTPLUG_LOG_WITH_PRINTK
++// #define HOTPLUG_LOG_PRINT                               HOTPLUG_LOG_WITH_PRINTK
++#define HOTPLUG_LOG_PRINT                               HOTPLUG_LOG_NONE
+ 
+ #if (HOTPLUG_LOG_PRINT == HOTPLUG_LOG_NONE)
+ #define HOTPLUG_INFO(fmt, args...)                    
