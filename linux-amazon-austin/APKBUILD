@@ -4,14 +4,14 @@
 pkgname=linux-amazon-austin
 pkgver=3.10.54
 pkgrel=3
-pkgdesc="Amazon Fire 7 (2017) kernel"
+pkgdesc="Amazon Fire 7 (2017) kernel fork"
 arch="armv7"
 _carch="arm"
 _flavor="amazon-austin"
 url="https://kernel.org"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
-makedepends="perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev devicepkg-dev gcc4 xz"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc4 linux-headers xz"
 
 # Compiler: GCC 4 (doesn't compile with versions above GCC 4)
 if [ "${CC:0:5}" != "gcc4-" ]; then
@@ -60,7 +60,7 @@ package() {
 
 sha512sums="
 2017b730bb7e9470084ff812dc3d35cd50040c4a69a9b443b2105393cdc6ce6bb03fc5c80ed8d2a04020103e89675162629fc81d2601ce40a291001bd4bfaea5  linux-amazon-austin-Fire_7_7th_Gen-5.3.7.3-20210714.tar.gz
-cb62e9f5326d8d329616cfd06d39c477618b3bdf57807f0dd4497e4251dea339be9a3d5f6950b6e2f1185f3d7a6cf6691997be07b1ddb9c603bb8f86cc0770a4  config-amazon-austin.armv7
+f17c4f66629a09835c621838f31b7a0a4bcd640c44384a2a5da41f3ba29e913a24f2e497b9991c7cd8910b64ef1ffb02ba6281c533e220d1d719f3ac299f5078  config-amazon-austin.armv7
 0ae455bd3d91ef03644f742916340951617e438e09e6552438daf71e3d5eaf498b022c01535160de92ef2fa3b4100f5a2bdb475179ac9705352a0a337b26e8b8  gcc4-compile-fixes.patch
 bfd9134f02059fdc948890a0f923f9c681e209b9ada6025eaa61e04348f69c9e155a094c929e5d6842c09d5782cbb98de3d004fee0ce40767ff954f4499e60fa  fix-host-card-inserted.patch
 00220241cf8d3b9fa692af6305b398e18cf138caa4bc1c3be969c2acd9381778544ff687337efe958bc33985b26a333c5327b6c419ddee44d284e0ae393fd270  silence-hotplug-logspam.patch
