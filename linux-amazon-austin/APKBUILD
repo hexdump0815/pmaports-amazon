@@ -22,11 +22,12 @@ fi
 
 # Source from amazon stock kernel
 _repository="linux-amazon-mediatek-mt8127-kernel-source"
-_commit="deea435cab1e86162df968d58d83839a8f733e01"
+_commit="Fire_7_7th_Gen-5.3.7.3-20210714"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	gcc4-compile-fixes.patch
 	fix-host-card-inserted.patch
 	silence-hotplug-logspam.patch
 	silence-power-logspam.patch
@@ -58,8 +59,9 @@ package() {
 }
 
 sha512sums="
-6db8dd93ded25d0041f60c13b804e6ddc6539aa791c082111a4af61abb0ec7ea22aa7031e42053f96fe539099f6828fd9e27b52ab61faaaa19e45c475de9675b  linux-amazon-austin-deea435cab1e86162df968d58d83839a8f733e01.tar.gz
+2017b730bb7e9470084ff812dc3d35cd50040c4a69a9b443b2105393cdc6ce6bb03fc5c80ed8d2a04020103e89675162629fc81d2601ce40a291001bd4bfaea5  linux-amazon-austin-Fire_7_7th_Gen-5.3.7.3-20210714.tar.gz
 cb62e9f5326d8d329616cfd06d39c477618b3bdf57807f0dd4497e4251dea339be9a3d5f6950b6e2f1185f3d7a6cf6691997be07b1ddb9c603bb8f86cc0770a4  config-amazon-austin.armv7
+0ae455bd3d91ef03644f742916340951617e438e09e6552438daf71e3d5eaf498b022c01535160de92ef2fa3b4100f5a2bdb475179ac9705352a0a337b26e8b8  gcc4-compile-fixes.patch
 bfd9134f02059fdc948890a0f923f9c681e209b9ada6025eaa61e04348f69c9e155a094c929e5d6842c09d5782cbb98de3d004fee0ce40767ff954f4499e60fa  fix-host-card-inserted.patch
 00220241cf8d3b9fa692af6305b398e18cf138caa4bc1c3be969c2acd9381778544ff687337efe958bc33985b26a333c5327b6c419ddee44d284e0ae393fd270  silence-hotplug-logspam.patch
 fc3529031cda24670d668fc8ad0e1cbd745db6a65b28df506169e49b6918de0fa81b6921a1f51271eb826a58d4e2c6c3292d46908913b3c8e70f790f3a82da76  silence-power-logspam.patch

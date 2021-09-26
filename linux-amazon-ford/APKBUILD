@@ -22,11 +22,12 @@ fi
 
 # Source from amazon stock kernel
 _repository="linux-amazon-mediatek-mt8127-kernel-source"
-_commit="def3ccfb02e9715ad86a2e26c09ee216ba73b256"
+_commit="Fire_7_LC_5th_Gen-5.3.6.4-20201006"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	gcc4-compile-fixes.patch
 	fix-host-card-inserted.patch
 	silence-hotplug-logspam.patch
 	silence-power-logspam.patch
@@ -58,8 +59,9 @@ package() {
 }
 
 sha512sums="
-a93cb29e3a90627254bcea5eb3f54bb5cebcb31737a409886e0412eba03c0f42bc5c9bc188e7de8b034859cadae008f1cf381980c97854a605995a1a625b918a  linux-amazon-ford-def3ccfb02e9715ad86a2e26c09ee216ba73b256.tar.gz
+c50c19e3132692a02f66ada16721ff2ca829528c97a727801962e7453efd3cb201538c164c34a195dab6410e0d8e8a931ed2b2b459d2e3982e4b4a3930f83539  linux-amazon-ford-Fire_7_LC_5th_Gen-5.3.6.4-20201006.tar.gz
 75af1c76705acea421687fb8559841471b7a36e766852fc94d12fbc21c2a1d12da4fbdac8c7e6f579baabd646fc618e96b7b0dfa0f7b74243eb40856e49961fb  config-amazon-ford.armv7
+0ae455bd3d91ef03644f742916340951617e438e09e6552438daf71e3d5eaf498b022c01535160de92ef2fa3b4100f5a2bdb475179ac9705352a0a337b26e8b8  gcc4-compile-fixes.patch
 bfd9134f02059fdc948890a0f923f9c681e209b9ada6025eaa61e04348f69c9e155a094c929e5d6842c09d5782cbb98de3d004fee0ce40767ff954f4499e60fa  fix-host-card-inserted.patch
 00220241cf8d3b9fa692af6305b398e18cf138caa4bc1c3be969c2acd9381778544ff687337efe958bc33985b26a333c5327b6c419ddee44d284e0ae393fd270  silence-hotplug-logspam.patch
 fc3529031cda24670d668fc8ad0e1cbd745db6a65b28df506169e49b6918de0fa81b6921a1f51271eb826a58d4e2c6c3292d46908913b3c8e70f790f3a82da76  silence-power-logspam.patch
