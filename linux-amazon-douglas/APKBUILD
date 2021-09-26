@@ -1,0 +1,62 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config is based on arch/arm64/configs/douglas_debug_defconfig
+#
+# However, this didn't seem to work initially as the generated config
+# file via pmbootstrap was somehow missing CONFIG_USB_G_ANDROID. I then
+# output of the kernel build script provided by Amazon, which printed
+# out the .config used for building the kernel.
+
+pkgname=linux-amazon-douglas
+pkgver=3.18.19
+pkgrel=5
+pkgdesc="Amazon Fire HD 8 (2017) kernel fork"
+arch="aarch64"
+_carch="arm64"
+_flavor="amazon-douglas"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc6"
+
+# Compiler: GCC 6
+if [ "${CC:0:5}" != "gcc6-" ]; then
+	CC="gcc6-$CC"
+	HOSTCC="gcc6-gcc"
+	CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+fi
+
+# Source
+_repository="linux-amazon-mediatek-mt8163-kernel-source"
+_commit="Fire_HD8_7th_Gen-5.3.7.3-20210714"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
+	$_config
+	fake-mali-api-version.patch
+	gcc10-extern_YYLOC_global_declaration.patch
+"
+#	disable-sound.patch
+builddir="$srcdir/$_repository-$_commit"
+_outdir="out"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
+}
+
+sha512sums="
+914f66c452d61f6e629d58e467111cbcdbb1121868d5b7da4f1b09c7f3457de9fdf67cca4ff6b03aa8293dd2eff02b14fd1c97f1273ada8bd5d522fa06f725a9  linux-amazon-douglas-Fire_HD8_7th_Gen-5.3.7.3-20210714.tar.gz
+0fc42d9a505d902ebf485900ca365c4c2d023abab8fe2528ff8b55386be82f029bf448a6155f4bb4847812430e7e30101b88614df33b657862ca350fc66def2f  config-amazon-douglas.aarch64
+53e7f259df7e5489222078a0ee7863b27102f36dd57de975103988c82c4fdff522739e57c8c4828661b6693d06e14bdb6fe5e9069616c1de31242bc00622cbc7  fake-mali-api-version.patch
+2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
+"
