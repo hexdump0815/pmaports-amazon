@@ -1,0 +1,22 @@
+diff --git a/drivers/power/mediatek/battery_common.c b/drivers/power/mediatek/battery_common.c
+index a8058811..ed7a670e 100644
+--- a/drivers/power/mediatek/battery_common.c
++++ b/drivers/power/mediatek/battery_common.c
+@@ -81,7 +81,7 @@
+ #include <mt-plat/internal_charging.h>
+ #endif
+ 
+-#if defined(CONFIG_AMAZON_METRICS_LOG)
++// #if defined(CONFIG_AMAZON_METRICS_LOG)
+ 
+ #if defined(CONFIG_EARLYSUSPEND)
+ #include <linux/earlysuspend.h>
+@@ -183,7 +183,7 @@ struct battery_data {
+ static struct battery_data battery_main;
+ 
+ struct battery_info BQ_info;
+-#endif /* CONFIG_AMAZON_METRICS_LOG */
++// #endif /* CONFIG_AMAZON_METRICS_LOG */
+ 
+ 
+ /* ///////////////////////////////////////////////////////////////////////////////////////// */
