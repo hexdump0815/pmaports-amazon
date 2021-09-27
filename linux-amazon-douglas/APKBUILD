@@ -16,13 +16,13 @@ _flavor="amazon-douglas"
 url="https://kernel.org"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
-makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc6"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc4"
 
-# Compiler: GCC 6
-if [ "${CC:0:5}" != "gcc6-" ]; then
-	CC="gcc6-$CC"
-	HOSTCC="gcc6-gcc"
-	CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+# Compiler: GCC 4
+if [ "${CC:0:5}" != "gcc4-" ]; then
+	CC="gcc4-$CC"
+	HOSTCC="gcc4-gcc"
+	CROSS_COMPILE="gcc4-$CROSS_COMPILE"
 fi
 
 # Source
@@ -32,10 +32,10 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
-	disable-sound.patch
 	fake-mali-api-version.patch
 	gcc10-extern_YYLOC_global_declaration.patch
 "
+#	disable-sound.patch
 builddir="$srcdir/$_repository-$_commit"
 _outdir="out"
 
@@ -56,8 +56,7 @@ package() {
 
 sha512sums="
 914f66c452d61f6e629d58e467111cbcdbb1121868d5b7da4f1b09c7f3457de9fdf67cca4ff6b03aa8293dd2eff02b14fd1c97f1273ada8bd5d522fa06f725a9  linux-amazon-douglas-Fire_HD8_7th_Gen-5.3.7.3-20210714.tar.gz
-bcb23fa40b0164a4de01f8c824866502c8f8fe4b4d0d9434e6c1af1ebb51001b47621bf156016e07538bfada8dc7b4a2c1ea6a5cbcc799c534a4c994c4aeb3f3  config-amazon-douglas.aarch64
-aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
+8034d573ebac9a9654c0dad2fb64f57e1a0c5fa71f8e46449e8823fe90c87e7814e61491bdebdf22c5b264dbf1c44485dde16c5995a3573cd6047fac070dec01  config-amazon-douglas.aarch64
 53e7f259df7e5489222078a0ee7863b27102f36dd57de975103988c82c4fdff522739e57c8c4828661b6693d06e14bdb6fe5e9069616c1de31242bc00622cbc7  fake-mali-api-version.patch
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
 "
