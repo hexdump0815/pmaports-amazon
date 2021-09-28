@@ -15,7 +15,7 @@ depends="
 	msm-fb-refresher
 "
 makedepends="devicepkg-dev"
-source="deviceinfo"
+source="deviceinfo 90-android-touch-dev.rules"
 
 build() {
 	devicepkg_build $startdir $pkgname
@@ -23,8 +23,12 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	install -Dm644 "$srcdir"/90-android-touch-dev.rules \
+		"$pkgdir"/etc/udev/rules.d/90-android-touch-dev.rules
 }
 
 sha512sums="
 2ea9144ff4d2ed78ed18490d37d057580514927a0cd57b6b747cef095c97ebb64fcda2929e4d07d7dd8f01ce22a55af1eacade895a40119bdcc08e6395dac063  deviceinfo
+f3d0b7d44f549100b3402fb287e80654279ae962a6b7721f3dc676324bdcf5c104391f9e4f3c5eac5733eff0ad467aa959a5f66553e7668c08124a1609ed3145  90-android-touch-dev.rules
 "
