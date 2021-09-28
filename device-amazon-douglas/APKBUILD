@@ -2,7 +2,7 @@
 pkgname=device-amazon-douglas
 pkgdesc="Amazon Fire HD 8 (2017)"
 pkgver=0.1
-pkgrel=1
+pkgrel=3
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -20,5 +20,5 @@ package() {
 }
 
 sha512sums="
-9a399829c2ba8f613990e427b8e117ef40284520cfab339217bd2711fd6c49b9401233f8bbf67c0572eab7bd8c2a5818c7ccf7d082fbf90b85eb7daa60656df8  deviceinfo
+26775183575d54cffbfb6b2aec99270e261e08fbfec502cedbb4fc19a9ad9ee1298655f6f69840812b9f305ef3b5f6f310e428d4360400ff100e50ddff3238db  deviceinfo
 "
