@@ -56,11 +56,16 @@ build() {
 
 package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
+
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_MOD_STRIP=1 modules_install
 }
 
 sha512sums="
 c50c19e3132692a02f66ada16721ff2ca829528c97a727801962e7453efd3cb201538c164c34a195dab6410e0d8e8a931ed2b2b459d2e3982e4b4a3930f83539  linux-amazon-ford-Fire_7_LC_5th_Gen-5.3.6.4-20201006.tar.gz
-681cec85dc72534002fea8aa1ea23d363e46eb053a559aa12313cc61ab210342be273cd8ea914c068ebc14e30051ad2a848d1551ee2fa15ebc338d46a5b72c3f  config-amazon-ford.armv7
+10a0ed7dbd89ba60d08be7e5dc33a02378049f9189f9ed51d3849d04ab21855fc041835cb1748433619c90dba4ad17ae06748da4ac5b6852d15929a0070c02c1  config-amazon-ford.armv7
 0ae455bd3d91ef03644f742916340951617e438e09e6552438daf71e3d5eaf498b022c01535160de92ef2fa3b4100f5a2bdb475179ac9705352a0a337b26e8b8  gcc4-compile-fixes.patch
 bfd9134f02059fdc948890a0f923f9c681e209b9ada6025eaa61e04348f69c9e155a094c929e5d6842c09d5782cbb98de3d004fee0ce40767ff954f4499e60fa  fix-host-card-inserted.patch
 00220241cf8d3b9fa692af6305b398e18cf138caa4bc1c3be969c2acd9381778544ff687337efe958bc33985b26a333c5327b6c419ddee44d284e0ae393fd270  silence-hotplug-logspam.patch
