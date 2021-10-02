@@ -32,11 +32,12 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
-	disable-sound.patch
+	silence-syscall-logspam.patch
 	fix-battery-data.patch
 	fake-mali-api-version.patch
 	gcc10-extern_YYLOC_global_declaration.patch
 "
+#	disable-sound.patch
 builddir="$srcdir/$_repository-$_commit"
 _outdir="out"
 
@@ -54,6 +55,7 @@ build() {
 package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
 
+	# in case there will be modules at any time, make sure they get installed as well
 	unset LDFLAGS
 	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
@@ -63,7 +65,7 @@ package() {
 sha512sums="
 914f66c452d61f6e629d58e467111cbcdbb1121868d5b7da4f1b09c7f3457de9fdf67cca4ff6b03aa8293dd2eff02b14fd1c97f1273ada8bd5d522fa06f725a9  linux-amazon-douglas-Fire_HD8_7th_Gen-5.3.7.3-20210714.tar.gz
 8b1ceed9734a49baadedbcbbe9cfdf325290867ad1988f55ab872fc8f82ff97f52320c10ea268323a97bc880e0a72a9be78cb68e97a4311647993a254267b0c1  config-amazon-douglas.aarch64
-aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
+102a4bb80d9d9736025594dd84ffa06c9d8c98c0fbe0a105975c366319882b64f0ac24db7b82259fee9675335fba8f1c0eeda9a936e392ee5e759d178bb4bfff  silence-syscall-logspam.patch
 dbb327d6ebdf7210eac92b46a123be5e390fa60c53b979e9d944f1fa47bfb126188f98a4b40d2c8962887b0a4c2f5f72e9346b422679666a97b0ac203134a5b3  fix-battery-data.patch
 53e7f259df7e5489222078a0ee7863b27102f36dd57de975103988c82c4fdff522739e57c8c4828661b6693d06e14bdb6fe5e9069616c1de31242bc00622cbc7  fake-mali-api-version.patch
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch

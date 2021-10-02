@@ -29,6 +29,7 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	silence-syscall-logspam.patch
 	gcc10-extern_YYLOC_global_declaration.patch
 "
 builddir="$srcdir/$_repository-$_commit"
@@ -47,10 +48,17 @@ build() {
 
 package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
+
+	# in case there will be modules at any time, make sure they get installed as well
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_MOD_STRIP=1 modules_install
 }
 
 sha512sums="
 8a608bb840ed70a1d81c685837d685c0d1518ed2f165cbaeb1ecedd0607dbd3fde1310658ac497bfb7471e16d8fa211c8acf91d10cfcd0a162447a2259bcb43a  linux-amazon-suez-Fire_HD10_7th_Gen-5.3.7.3-20210714.tar.gz
-a5b350d972b72b3570acd87fcfa6a4188ef9c8e82cf1666eee11ece41ba757c89372809056aef9f9a049a8dfa4c140b9ae52eb641fa545d787fab42aaf9823c3  config-amazon-suez.aarch64
+942026fd32b864d3104b7d1039f7ce6ca8b4233ac5ca62a81b70a328c6634307f3fa98f186f23c60219aba95aaf8998b76c8c7a6ff0db33cf78a166bf75a1ba0  config-amazon-suez.aarch64
+85648675976ea315164075f2750f8bd6308637ccc5e17d95e2caf42e46a2502c424a10e738c79e9f7a1b832a8ba8cb245b056b48b2d5f76683425fee73ef03ec  silence-syscall-logspam.patch
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
 "
