@@ -1,4 +1,5 @@
 # Reference: <https://postmarketos.org/vendorkernel>
+# This port is heavily inspired by https://github.com/GjergjiFloychi/amazon-austin-pmaports
 # Kernel config based on: https://github.com/NixOS/mobile-nixos/blob/master/devices/amazon-austin/kernel/config.armv7
 
 pkgname=linux-amazon-austin
@@ -58,6 +59,7 @@ build() {
 package() {
 	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
 
+	# in case there will be modules at any time, make sure they get installed as well
 	unset LDFLAGS
 	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
