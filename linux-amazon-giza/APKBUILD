@@ -1,0 +1,60 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config is based on arch/arm64/configs/giza_defconfig
+
+pkgname=linux-amazon-giza
+pkgver=3.18.19
+pkgrel=5
+pkgdesc="Amazon Fire HD 8 (2016) kernel fork"
+arch="aarch64"
+_carch="arm64"
+_flavor="amazon-giza"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc6"
+
+# Compiler: GCC 6
+if [ "${CC:0:5}" != "gcc6-" ]; then
+	CC="gcc6-$CC"
+	HOSTCC="gcc6-gcc"
+	CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+fi
+
+# Source
+_repository="linux-amazon-mediatek-mt8163-kernel-source"
+_commit="Fire_HD8_6th_Gen-5.3.6.4-20201006"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
+	$_config
+	gcc10-extern_YYLOC_global_declaration.patch
+"
+builddir="$srcdir/$_repository-$_commit"
+_outdir="out"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
+
+	# in case there will be modules at any time, make sure they get installed as well
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_MOD_STRIP=1 modules_install
+}
+
+sha512sums="
+86ab2c49d22b07ad950e7c2b3b7e2b5781364d9f4da59ef15d717d40e73df54e952ddd36b7038b2c14e80271c61d799ecd19f092b5aa51a389411d51c52b4e07  linux-amazon-giza-Fire_HD8_6th_Gen-5.3.6.4-20201006.tar.gz
+72654c131026ae7bab5debd073949b37f087230953ffd476efd7a5a832640eb773766763a150a800b4ccd5bce1cedb8c65dd826f490f2952f2f12103bfdb2e3c  config-amazon-giza.aarch64
+2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
+"

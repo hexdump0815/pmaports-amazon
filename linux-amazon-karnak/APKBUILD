@@ -1,0 +1,60 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config is based on arch/arm64/configs/karnak_defconfig
+
+pkgname=linux-amazon-karnak
+pkgver=3.18.19
+pkgrel=5
+pkgdesc="Amazon Fire HD 8 (2018) kernel fork"
+arch="aarch64"
+_carch="arm64"
+_flavor="amazon-karnak"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc6"
+
+# Compiler: GCC 6
+if [ "${CC:0:5}" != "gcc6-" ]; then
+	CC="gcc6-$CC"
+	HOSTCC="gcc6-gcc"
+	CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+fi
+
+# Source
+_repository="linux-amazon-mediatek-mt8163-kernel-source"
+_commit="Fire_HD8_8th_Gen-6.3.1.5-20200221"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
+	$_config
+	gcc10-extern_YYLOC_global_declaration.patch
+"
+builddir="$srcdir/$_repository-$_commit"
+_outdir="out"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor" "$_outdir"
+
+	# in case there will be modules at any time, make sure they get installed as well
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_MOD_STRIP=1 modules_install
+}
+
+sha512sums="
+6914a49e103e84a5a31c6f654a82f5aae680c52335323768f8087a675c3f128af7fee9d4aabedb624eff76ca808e8fdc256a8abbfecdda6e7d893ea2022d65d2  linux-amazon-karnak-Fire_HD8_8th_Gen-6.3.1.5-20200221.tar.gz
+9333a0554535158c10636d2a2d53843756e15b3605abccef9948b4855b87eb10370fbda2044fe7f4cb22b005df6b8caa586b412f59f23a38f166f4717fa1c2ce  config-amazon-karnak.aarch64
+2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
+"

@@ -1,0 +1,24 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-amazon-giza
+pkgdesc="Amazon Fire HD 8 (2016)"
+pkgver=0.1
+pkgrel=1
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="postmarketos-base linux-amazon-giza mkbootimg mesa-dri-gallium"
+makedepends="devicepkg-dev"
+source="deviceinfo"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+sha512sums="
+c39704310b5444e74b40cf14e215ad6ccd7a8ed6f971e18be9ef069d1aff1ae104a3f4fcb35f8ff0dec216258bc7031416f6f9fbb615de0f2d073e41ae4cb61e  deviceinfo
+"
