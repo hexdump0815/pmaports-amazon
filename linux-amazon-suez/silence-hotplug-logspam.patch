@@ -1,0 +1,229 @@
+diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+index e86b9b42..2df9b550 100644
+--- a/arch/arm64/kernel/cpuinfo.c
++++ b/arch/arm64/kernel/cpuinfo.c
+@@ -86,7 +86,7 @@ static void cpuinfo_detect_icache_policy(struct cpuinfo_arm64 *info)
+ 	if (l1ip == ICACHE_POLICY_AIVIVT)
+ 		set_bit(ICACHEF_AIVIVT, &__icache_flags);
+ 
+-	pr_info("Detected %s I-cache on CPU%d\n", icache_policy_str[l1ip], cpu);
++//	pr_info("Detected %s I-cache on CPU%d\n", icache_policy_str[l1ip], cpu);
+ }
+ 
+ static int check_reg_mask(char *name, u64 mask, u64 boot, u64 cur, int cpu)
+@@ -94,8 +94,8 @@ static int check_reg_mask(char *name, u64 mask, u64 boot, u64 cur, int cpu)
+ 	if ((boot & mask) == (cur & mask))
+ 		return 0;
+ 
+-	pr_warn("SANITY CHECK: Unexpected variation in %s. Boot CPU: %#016lx, CPU%d: %#016lx\n",
+-		name, (unsigned long)boot, cpu, (unsigned long)cur);
++//	pr_warn("SANITY CHECK: Unexpected variation in %s. Boot CPU: %#016lx, CPU%d: %#016lx\n",
++//		name, (unsigned long)boot, cpu, (unsigned long)cur);
+ 
+ 	return 1;
+ }
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 1efb3ae7..c2e41b39 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -169,7 +169,7 @@ asmlinkage void secondary_start_kernel(void)
+ 	aee_rr_rec_hoplug(cpu, 2, 0);
+ 
+ 	set_my_cpu_offset(per_cpu_offset(smp_processor_id()));
+-	printk("CPU%u: Booted secondary processor\n", cpu);
++//	printk("CPU%u: Booted secondary processor\n", cpu);
+ 
+ 	aee_rr_rec_hoplug(cpu, 3, 0);
+ 
+@@ -333,7 +333,7 @@ void __cpu_die(unsigned int cpu)
+ 		pr_crit("CPU%u: cpu didn't die\n", cpu);
+ 		return;
+ 	}
+-	pr_notice("CPU%u: shutdown\n", cpu);
++//	pr_notice("CPU%u: shutdown\n", cpu);
+ 
+ 	/*
+ 	 * Now that the dying CPU is beyond the point of no return w.r.t.
+diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+index afea360b..9026daa2 100644
+--- a/arch/arm64/kernel/topology.c
++++ b/arch/arm64/kernel/topology.c
+@@ -278,8 +278,8 @@ static void update_cpu_capacity(unsigned int cpu)
+ 
+ 	set_capacity_scale(cpu, capacity);
+ 
+-	pr_info("CPU%u: update cpu_capacity %lu\n",
+-		cpu, arch_scale_cpu_capacity(NULL, cpu));
++//	pr_info("CPU%u: update cpu_capacity %lu\n",
++//		cpu, arch_scale_cpu_capacity(NULL, cpu));
+ }
+ 
+ /*
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index fb83d4ac..bae3e318 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -235,10 +235,10 @@ static int __pm_genpd_poweron(struct generic_pm_domain *genpd)
+ 			genpd->power_on_latency_ns = elapsed_ns;
+ 			genpd->max_off_time_changed = true;
+ 			genpd_recalc_cpu_exit_latency(genpd);
+-			if (genpd->name)
+-				pr_warning("%s: Power-on latency exceeded, "
+-					"new value %lld ns\n", genpd->name,
+-					elapsed_ns);
++//			if (genpd->name)
++//				pr_warning("%s: Power-on latency exceeded, "
++//					"new value %lld ns\n", genpd->name,
++//					elapsed_ns);
+ 		}
+ 	}
+ 
+@@ -572,10 +572,10 @@ static int pm_genpd_poweroff(struct generic_pm_domain *genpd)
+ 		if (elapsed_ns > genpd->power_off_latency_ns) {
+ 			genpd->power_off_latency_ns = elapsed_ns;
+ 			genpd->max_off_time_changed = true;
+-			if (genpd->name)
+-				pr_warning("%s: Power-off latency exceeded, "
+-					"new value %lld ns\n", genpd->name,
+-					elapsed_ns);
++//			if (genpd->name)
++//				pr_warning("%s: Power-off latency exceeded, "
++//					"new value %lld ns\n", genpd->name,
++//					elapsed_ns);
+ 		}
+ 	}
+ 
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 46ba0e72..d0acef22 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -1075,7 +1075,7 @@ static void cpufreq_policy_put_kobj(struct cpufreq_policy *policy)
+ 	cmp = &policy->kobj_unregister;
+ 	up_read(&policy->rwsem);
+ 	kobject_put(kobj);
+-	pr_info("%s[%d], after kobject_put(kobj), refcount=%ul;\n", __func__, __LINE__, kobj->kref.refcount);
++//	pr_info("%s[%d], after kobject_put(kobj), refcount=%ul;\n", __func__, __LINE__, kobj->kref.refcount);
+ 
+ 	/*
+ 	 * We need to make sure that the underlying kobj is
+diff --git a/drivers/misc/mediatek/base/power/mt8173/mt_hotplug_strategy_algo.c b/drivers/misc/mediatek/base/power/mt8173/mt_hotplug_strategy_algo.c
+index 309709ac..caa8fd95 100644
+--- a/drivers/misc/mediatek/base/power/mt8173/mt_hotplug_strategy_algo.c
++++ b/drivers/misc/mediatek/base/power/mt8173/mt_hotplug_strategy_algo.c
+@@ -588,27 +588,27 @@ void hps_algo_hmp(void)
+ 	 * algo - end
+ 	 */
+ ALGO_END_WITH_ACTION:
+-	hps_warn(
+-		"(%04x)(%u)(%u)action end(%u)(%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)\n",
+-		hps_ctxt.action, little_num_online, big_num_online,
+-		hps_ctxt.cur_loads, hps_ctxt.cur_tlp,
+-		hps_ctxt.cur_iowait, hps_ctxt.cur_nr_heavy_task,
+-		hps_ctxt.little_num_limit_thermal,
+-		hps_ctxt.big_num_limit_thermal,
+-		hps_ctxt.little_num_limit_low_battery,
+-		hps_ctxt.big_num_limit_low_battery,
+-		hps_ctxt.little_num_limit_ultra_power_saving,
+-		hps_ctxt.big_num_limit_ultra_power_saving,
+-		hps_ctxt.little_num_limit_power_serv,
+-		hps_ctxt.big_num_limit_power_serv,
+-		hps_ctxt.little_num_base_perf_serv,
+-		hps_ctxt.big_num_base_perf_serv,
+-		hps_ctxt.up_loads_sum, hps_ctxt.up_loads_count,
+-		hps_ctxt.up_loads_history_index,
+-		hps_ctxt.down_loads_sum, hps_ctxt.down_loads_count,
+-		hps_ctxt.down_loads_history_index,
+-		hps_ctxt.rush_count, hps_ctxt.tlp_sum, hps_ctxt.tlp_count,
+-		hps_ctxt.tlp_history_index, hps_ctxt.tlp_avg);
++//	hps_warn(
++//		"(%04x)(%u)(%u)action end(%u)(%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)\n",
++//		hps_ctxt.action, little_num_online, big_num_online,
++//		hps_ctxt.cur_loads, hps_ctxt.cur_tlp,
++//		hps_ctxt.cur_iowait, hps_ctxt.cur_nr_heavy_task,
++//		hps_ctxt.little_num_limit_thermal,
++//		hps_ctxt.big_num_limit_thermal,
++//		hps_ctxt.little_num_limit_low_battery,
++//		hps_ctxt.big_num_limit_low_battery,
++//		hps_ctxt.little_num_limit_ultra_power_saving,
++//		hps_ctxt.big_num_limit_ultra_power_saving,
++//		hps_ctxt.little_num_limit_power_serv,
++//		hps_ctxt.big_num_limit_power_serv,
++//		hps_ctxt.little_num_base_perf_serv,
++//		hps_ctxt.big_num_base_perf_serv,
++//		hps_ctxt.up_loads_sum, hps_ctxt.up_loads_count,
++//		hps_ctxt.up_loads_history_index,
++//		hps_ctxt.down_loads_sum, hps_ctxt.down_loads_count,
++//		hps_ctxt.down_loads_history_index,
++//		hps_ctxt.rush_count, hps_ctxt.tlp_sum, hps_ctxt.tlp_count,
++//		hps_ctxt.tlp_history_index, hps_ctxt.tlp_avg);
+ 	hps_ctxt_reset_stas_nolock();
+ ALGO_END_WO_ACTION:
+ 	mutex_unlock(&hps_ctxt.lock);
+@@ -997,22 +997,22 @@ void hps_algo_smp(void)
+ 	 * algo - end
+ 	 */
+ ALGO_END_WITH_ACTION:
+-	hps_warn(
+-		"(%04x)(%u)action end(%u)(%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)\n",
+-		hps_ctxt.action, little_num_online,
+-		hps_ctxt.cur_loads, hps_ctxt.cur_tlp, hps_ctxt.cur_iowait,
+-		hps_ctxt.cur_nr_heavy_task,
+-		hps_ctxt.little_num_limit_thermal,
+-		hps_ctxt.little_num_limit_low_battery,
+-		hps_ctxt.little_num_limit_ultra_power_saving,
+-		hps_ctxt.little_num_limit_power_serv,
+-		hps_ctxt.little_num_base_perf_serv,
+-		hps_ctxt.up_loads_sum, hps_ctxt.up_loads_count,
+-		hps_ctxt.up_loads_history_index,
+-		hps_ctxt.down_loads_sum, hps_ctxt.down_loads_count,
+-		hps_ctxt.down_loads_history_index,
+-		hps_ctxt.rush_count, hps_ctxt.tlp_sum, hps_ctxt.tlp_count,
+-		hps_ctxt.tlp_history_index, hps_ctxt.tlp_avg);
++//	hps_warn(
++//		"(%04x)(%u)action end(%u)(%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u) (%u)(%u)(%u)(%u)(%u)\n",
++//		hps_ctxt.action, little_num_online,
++//		hps_ctxt.cur_loads, hps_ctxt.cur_tlp, hps_ctxt.cur_iowait,
++//		hps_ctxt.cur_nr_heavy_task,
++//		hps_ctxt.little_num_limit_thermal,
++//		hps_ctxt.little_num_limit_low_battery,
++//		hps_ctxt.little_num_limit_ultra_power_saving,
++//		hps_ctxt.little_num_limit_power_serv,
++//		hps_ctxt.little_num_base_perf_serv,
++//		hps_ctxt.up_loads_sum, hps_ctxt.up_loads_count,
++//		hps_ctxt.up_loads_history_index,
++//		hps_ctxt.down_loads_sum, hps_ctxt.down_loads_count,
++//		hps_ctxt.down_loads_history_index,
++//		hps_ctxt.rush_count, hps_ctxt.tlp_sum, hps_ctxt.tlp_count,
++//		hps_ctxt.tlp_history_index, hps_ctxt.tlp_avg);
+ 	hps_ctxt_reset_stas_nolock();
+ ALGO_END_WO_ACTION:
+ 	mutex_unlock(&hps_ctxt.lock);
+diff --git a/drivers/misc/mediatek/base/power/mt8173/mt_vcore_dvfs_64.c b/drivers/misc/mediatek/base/power/mt8173/mt_vcore_dvfs_64.c
+index 56b1f92a..f74252e6 100644
+--- a/drivers/misc/mediatek/base/power/mt8173/mt_vcore_dvfs_64.c
++++ b/drivers/misc/mediatek/base/power/mt8173/mt_vcore_dvfs_64.c
+@@ -154,7 +154,8 @@ static struct kobj_attribute _name##_attr = {	\
+ 
+ #define vcorefs_emerg(fmt, args...)	pr_emerg(fmt, ##args)
+ #define vcorefs_alert(fmt, args...)	pr_alert(fmt, ##args)
+-#define vcorefs_crit(fmt, args...)	pr_crit(fmt, ##args)
++//#define vcorefs_crit(fmt, args...)	pr_crit(fmt, ##args)
++#define vcorefs_crit(fmt, args...)	pr_debug(fmt, ##args)
+ #define vcorefs_err(fmt, args...)	pr_err(fmt, ##args)
+ #define vcorefs_warn(fmt, args...)	pr_warn(fmt, ##args)
+ #define vcorefs_notice(fmt, args...)	pr_notice(fmt, ##args)
+@@ -649,10 +650,10 @@ static int kick_dvfs_by_index(struct pwr_ctrl *pwrctrl, enum dvfs_kicker kicker,
+ 	int r;
+ 	bool in_autok = false;
+ 
+-	vcorefs_crit("%s[%d], %u kick: lock = %u, index = %u, curr_index = %u (%u)\n",
+-		__func__, __LINE__, kicker, pwrctrl->sdio_lock, index, curr_opp_index, prev_opp_index);
+-	vcorefs_crit("%s[%d], vcore_dvfs_before_late_init=%d, dtcm_ready=%d, md32_mobile_log_ready=%d\n",
+-		__func__, __LINE__, vcore_dvfs_before_late_init, dtcm_ready, md32_mobile_log_ready);
++//	vcorefs_crit("%s[%d], %u kick: lock = %u, index = %u, curr_index = %u (%u)\n",
++//		__func__, __LINE__, kicker, pwrctrl->sdio_lock, index, curr_opp_index, prev_opp_index);
++//	vcorefs_crit("%s[%d], vcore_dvfs_before_late_init=%d, dtcm_ready=%d, md32_mobile_log_ready=%d\n",
++//		__func__, __LINE__, vcore_dvfs_before_late_init, dtcm_ready, md32_mobile_log_ready);
+ 
+ 	if (curr_opp_index == index && curr_opp_index == prev_opp_index)
+ 		return 0;

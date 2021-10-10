@@ -1,0 +1,237 @@
+diff --git a/drivers/power/mt81xx/mt_battery_common.c b/drivers/power/mt81xx/mt_battery_common.c
+index eaf6f475..1ed6c4b6 100644
+--- a/drivers/power/mt81xx/mt_battery_common.c
++++ b/drivers/power/mt81xx/mt_battery_common.c
+@@ -59,7 +59,7 @@
+ #include <linux/irq.h>
+ #include <linux/reboot.h>
+ 
+-#if defined(CONFIG_AMAZON_METRICS_LOG)
++// #if defined(CONFIG_AMAZON_METRICS_LOG)
+ 
+ #if defined(CONFIG_EARLYSUSPEND)
+ #include <linux/earlysuspend.h>
+@@ -157,7 +157,7 @@ struct metrics_capacity {
+ extern void bq24297_get_fault_type(unsigned char *type);
+ 
+ extern unsigned long get_virtualsensor_temp(void);
+-#endif /* CONFIG_AMAZON_METRICS_LOG */
++// #endif /* CONFIG_AMAZON_METRICS_LOG */
+ 
+ struct battery_common_data g_bat;
+ struct fg_error_detection g_fg_err_det;
+@@ -2125,7 +2125,7 @@ static DEVICE_ATTR(Custom_Charging_Current, 0664, show_Custom_Charging_Current,
+ static ssize_t show_Custom_PlugIn_Time(struct device *dev,
+ 	struct device_attribute *attr, char *buf)
+ {
+-	pr_notice("custom plugin_time = %lu\n", g_custom_plugin_time);
++//	pr_notice("custom plugin_time = %lu\n", g_custom_plugin_time);
+ 	return sprintf(buf, "0");
+ }
+ 
+@@ -2135,7 +2135,7 @@ static ssize_t store_Custom_PlugIn_Time(struct device *dev,
+ 	int ret;
+ 
+ 	ret = kstrtoul(buf, 0, &g_custom_plugin_time);
+-	pr_notice("custom plugin_time = %lu\n", g_custom_plugin_time);
++//	pr_notice("custom plugin_time = %lu\n", g_custom_plugin_time);
+ 	if (g_custom_plugin_time > PLUGIN_THRESHOLD)
+ 		g_custom_plugin_time = PLUGIN_THRESHOLD;
+ 
+@@ -2164,7 +2164,7 @@ static DEVICE_ATTR(charger_plugin_counter, 0444, show_charger_plugin_counter, NU
+ static ssize_t show_Custom_Charging_Mode(struct device *dev,
+ 	struct device_attribute *attr, char *buf)
+ {
+-	pr_notice("Charging mode = %u\n", g_custom_charging_mode);
++//	pr_notice("Charging mode = %u\n", g_custom_charging_mode);
+ 	return sprintf(buf, "%u\n", g_custom_charging_mode);
+ }
+ 
+@@ -2174,7 +2174,7 @@ static ssize_t store_Custom_Charging_Mode(struct device *dev,
+ 	int ret;
+ 
+ 	ret = kstrtouint(buf, 0, &g_custom_charging_mode);
+-	pr_notice("Charging mode= %u\n", g_custom_charging_mode);
++//	pr_notice("Charging mode= %u\n", g_custom_charging_mode);
+ 
+ 	return size;
+ }
+@@ -2230,8 +2230,8 @@ static bool check_top_off_state(void)
+ 			reset_plug_in_timer();
+ 		}
+ 
+-		pr_notice("[%s] %d, %d, %d, %lu, %d\r\n", __func__, BMT_status.UI_SOC,
+-			BMT_status.SOC, top_off_flag, g_custom_plugin_time, g_custom_fake_full);
++//		pr_notice("[%s] %d, %d, %d, %lu, %d\r\n", __func__, BMT_status.UI_SOC,
++//			BMT_status.SOC, top_off_flag, g_custom_plugin_time, g_custom_fake_full);
+ 	} else
+ 		top_off_flag = false;
+ 
+@@ -2290,13 +2290,13 @@ static int mt_battery_high_fg_error_det(void)
+ 
+ 	}
+ 
+-	if (g_fg_err_det.is_detected)
+-		pr_notice("%s: %d [%d %d] [%d %d] %d [%d %d %d] %d %ld\n",
+-			__func__,
+-			data->boot_reason, data->ui_soc, data->soc,
+-			data->dod0, data->dod1, data->hw_ocv_init,
+-			data->hw_soc_init, data->sw_soc_init, data->rtc_soc_init,
+-			data->soc_gap, data->time_gap);
++//	if (g_fg_err_det.is_detected)
++//		pr_notice("%s: %d [%d %d] [%d %d] %d [%d %d %d] %d %ld\n",
++//			__func__,
++//			data->boot_reason, data->ui_soc, data->soc,
++//			data->dod0, data->dod1, data->hw_ocv_init,
++//			data->hw_soc_init, data->sw_soc_init, data->rtc_soc_init,
++//			data->soc_gap, data->time_gap);
+ 
+ 	return 0;
+ }
+@@ -3843,8 +3843,8 @@ void BAT_thread(void)
+ 			bat_demo_flag = false;
+ #endif
+ 
+-		pr_notice("total_time_plug_in(%lu), cv(%d)\r\n",
+-				total_time_plug_in, g_custom_charging_cv);
++//		pr_notice("total_time_plug_in(%lu), cv(%d)\r\n",
++//				total_time_plug_in, g_custom_charging_cv);
+ 
+ 		mt_battery_CheckBatteryStatus();
+ 		mt_battery_charging_algorithm();
+diff --git a/drivers/power/mt81xx/mt_battery_meter.c b/drivers/power/mt81xx/mt_battery_meter.c
+index af398129..3589d385 100644
+--- a/drivers/power/mt81xx/mt_battery_meter.c
++++ b/drivers/power/mt81xx/mt_battery_meter.c
+@@ -1382,8 +1382,8 @@ void dod_init(void)
+ 	    || ((g_rtc_fg_soc != 0)
+ 		&& (get_boot_reason() == BR_WDT_BY_PASS_PWK || get_boot_reason() == BR_WDT
+ 		    || get_boot_mode() == RECOVERY_BOOT))) {
+-		pr_info("[%s]: overwrite soc_v[%d] by soc_rtc[%d]\n",
+-				__func__, gFG_capacity_by_v, g_rtc_fg_soc);
++//		pr_info("[%s]: overwrite soc_v[%d] by soc_rtc[%d]\n",
++//				__func__, gFG_capacity_by_v, g_rtc_fg_soc);
+ 		gFG_capacity_by_v = g_rtc_fg_soc;
+ 	}
+ 
+@@ -1775,16 +1775,16 @@ void fgauge_algo_run(void)
+ 	}
+ 
+ /* 5. Logging */
+-	pr_info("[fg_data:0] GG init cond. hw_ocv=%d, HW_SOC=%d, SW_SOC=%d, RTC_SOC=%d, boot_reason(%d)\n",
+-		 g_hw_ocv_debug, g_hw_soc_debug, g_sw_soc_debug, g_rtc_soc_debug, g_boot_reason_debug);
+-
+-	pr_info("[fg_data:1] %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+-		 gFG_Is_Charging, gFG_current, gFG_columb, gFG_voltage, gFG_capacity_by_v,
+-		 gFG_capacity_by_c, gFG_capacity_by_c_init, gFG_BATT_CAPACITY,
+-		 gFG_BATT_CAPACITY_aging, gFG_compensate_value, gFG_ori_voltage,
+-		 p_bat_meter_data->ocv_board_compesate, p_bat_meter_data->r_fg_board_slope,
+-		 gFG_voltage_init, p_bat_meter_data->min_error_offset, gFG_DOD0, gFG_DOD1,
+-		 p_bat_meter_data->car_tune_value, p_bat_meter_data->aging_tuning_value);
++//	pr_info("[fg_data:0] GG init cond. hw_ocv=%d, HW_SOC=%d, SW_SOC=%d, RTC_SOC=%d, boot_reason(%d)\n",
++//		 g_hw_ocv_debug, g_hw_soc_debug, g_sw_soc_debug, g_rtc_soc_debug, g_boot_reason_debug);
++
++//	pr_info("[fg_data:1] %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
++//		 gFG_Is_Charging, gFG_current, gFG_columb, gFG_voltage, gFG_capacity_by_v,
++//		 gFG_capacity_by_c, gFG_capacity_by_c_init, gFG_BATT_CAPACITY,
++//		 gFG_BATT_CAPACITY_aging, gFG_compensate_value, gFG_ori_voltage,
++//		 p_bat_meter_data->ocv_board_compesate, p_bat_meter_data->r_fg_board_slope,
++//		 gFG_voltage_init, p_bat_meter_data->min_error_offset, gFG_DOD0, gFG_DOD1,
++//		 p_bat_meter_data->car_tune_value, p_bat_meter_data->aging_tuning_value);
+ 	update_fg_dbg_tool_value();
+ }
+ 
+@@ -2289,8 +2289,8 @@ s32 battery_meter_trans_battery_percentage(s32 d_val)
+ 	if (d_val > 100)
+ 		d_val = 100;
+ 
+-	pr_info("[fg_data:2] %d,%d,%d,%d,%d,%d\n", temp_val, C_0mA,
+-			C_600mA, d_val_before, d_val, g_currentfactor);
++//	pr_info("[fg_data:2] %d,%d,%d,%d,%d,%d\n", temp_val, C_0mA,
++//			C_600mA, d_val_before, d_val, g_currentfactor);
+ 
+ 	return d_val;
+ }
+@@ -2936,8 +2936,8 @@ static ssize_t copy_battery_profile(const char *buffer, int count)
+ 		ret = 0;
+ 	}
+ 
+-	pr_info("%s copy from user pass profile_index: %d and count %d with ret %d\n",
+-			__func__, profile_index, count, ret);
++//	pr_info("%s copy from user pass profile_index: %d and count %d with ret %d\n",
++//			__func__, profile_index, count, ret);
+ 	return ret;
+ }
+ 
+@@ -2986,8 +2986,8 @@ static ssize_t copy_r_profile(const char *buffer, int count)
+ 		ret = 0;
+ 	}
+ 
+-	pr_info("%s copy from user pass profile_index: %d and count %d with ret %d\n",
+-			__func__, profile_index, count, ret);
++//	pr_info("%s copy from user pass profile_index: %d and count %d with ret %d\n",
++//			__func__, profile_index, count, ret);
+ 	return ret;
+ 
+ }
+@@ -3027,8 +3027,8 @@ static ssize_t battery_cvr_battery_profile_index_write(struct file *file, const
+ 		return -EFAULT;
+ 	}
+ 
+-	pr_info("%s end with profile_index %d and count %d\n",
+-			__func__, profile_index, (int)count);
++//	pr_info("%s end with profile_index %d and count %d\n",
++//			__func__, profile_index, (int)count);
+ 	return count;
+ }
+ 
+@@ -3127,8 +3127,8 @@ static ssize_t battery_cvr_q_max_write(struct file *file, const char *buffer, si
+ 	}
+ 
+ 
+-	pr_info("%s copy from user profile_index %d, count %d and ret %d\n",
+-			__func__, profile_index, (int)count, ret);
++//	pr_info("%s copy from user profile_index %d, count %d and ret %d\n",
++//			__func__, profile_index, (int)count, ret);
+ 	return ret;
+ }
+ 
+@@ -3159,19 +3159,19 @@ static int init_proc_battery_cvr(void)
+ 	} else {
+ 		proc_create("battery_cvr_battery_profile_index", S_IRUGO | S_IWUSR, battery_cvr_dir,
+ 					&battery_cvr_battery_profile_index_proc_fops);
+-		pr_info("proc_create battery_profile_index_proc_fops\n");
++//		pr_info("proc_create battery_profile_index_proc_fops\n");
+ 
+ 		proc_create("battery_cvr_battery_profile", S_IRUGO | S_IWUSR, battery_cvr_dir,
+ 					&battery_cvr_battery_profile_proc_fops);
+-		pr_info("proc_create battery_profile_proc_fops\n");
++//		pr_info("proc_create battery_profile_proc_fops\n");
+ 
+ 		proc_create("battery_cvr_r_profile", S_IRUGO | S_IWUSR, battery_cvr_dir,
+ 					&battery_cvr_r_profile_proc_fops);
+-		pr_info("proc_create battery_r_profile_proc_fops\n");
++//		pr_info("proc_create battery_r_profile_proc_fops\n");
+ 
+ 		proc_create("battery_cvr_q_max", S_IRUGO | S_IWUSR, battery_cvr_dir,
+ 						&battery_cvr_q_max_proc_fops);
+-		pr_info("proc_create battery_q_max_proc_fops\n");
++//		pr_info("proc_create battery_q_max_proc_fops\n");
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/power/mt81xx/mt_switch_charging.c b/drivers/power/mt81xx/mt_switch_charging.c
+index 7531f3f2..6cb02512 100644
+--- a/drivers/power/mt81xx/mt_switch_charging.c
++++ b/drivers/power/mt81xx/mt_switch_charging.c
+@@ -308,8 +308,8 @@ static int select_jeita_cv(void)
+ 	if (g_custom_charging_mode) /* For demo unit */
+ 		cv_voltage = BATTERY_VOLT_04_096000_V;
+ 
+-	pr_info("[%s] CV(%d) custom CV(%d)\r\n",
+-			__func__, cv_voltage, g_custom_charging_cv);
++//	pr_info("[%s] CV(%d) custom CV(%d)\r\n",
++//			__func__, cv_voltage, g_custom_charging_cv);
+ 
+ 	return cv_voltage;
+ }
