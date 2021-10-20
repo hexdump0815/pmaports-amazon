@@ -1,0 +1,25 @@
+# Maintainer: hexdump0815 <hexdump0815@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-amazon-sloane
+pkgdesc="Amazon Fire TV 2nd Generation"
+pkgver=0.1
+pkgrel=1
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="postmarketos-base linux-amazon-sloane mkbootimg mesa-dri-swrast"
+makedepends="devicepkg-dev"
+source="deviceinfo"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+
+sha512sums="
+"
