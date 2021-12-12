@@ -1,0 +1,146 @@
+see: https://lists.linaro.org/pipermail/linaro-dev/2013-April/015859.html
+
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 6f98225f7..e2682ee07 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -1020,7 +1020,7 @@ static int oom_adjust_permission(struct inode *inode, int mask)
+ 
+ 	p = get_proc_task(inode);
+ 	if(p) {
+-		uid = task_uid(p);
++		uid = __kuid_val(task_uid(p));
+ 		put_task_struct(p);
+ 	}
+ 
+@@ -1028,7 +1028,7 @@ static int oom_adjust_permission(struct inode *inode, int mask)
+ 	 * System Server (uid == 1000) is granted access to oom_adj of all 
+ 	 * android applications (uid > 10000) as and services (uid >= 1000)
+ 	 */
+-	if (p && (current_fsuid() == 1000) && (uid >= 1000)) {
++	if (p && (__kuid_val(current_fsuid()) == 1000) && (uid >= 1000)) {
+ 		if (inode->i_mode >> 6 & mask) {
+ 			return 0;
+ 		}
+diff --git a/kernel/cgroup.c b/kernel/cgroup.c
+index dc8acbddb..1093038c6 100644
+--- a/kernel/cgroup.c
++++ b/kernel/cgroup.c
+@@ -2135,8 +2135,8 @@ int subsys_cgroup_allow_attach(struct cgroup *cgrp, struct cgroup_taskset *tset)
+ 	cgroup_taskset_for_each(task, cgrp, tset) {
+ 		tcred = __task_cred(task);
+ 
+-		if (current != task && cred->euid != tcred->uid &&
+-		    cred->euid != tcred->suid)
++		if (current != task && __kuid_val(cred->euid) != __kuid_val(tcred->uid) &&
++		    __kuid_val(cred->euid) != __kuid_val(tcred->suid))
+ 			return -EACCES;
+ 	}
+ 
+diff --git a/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c b/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c
+index 2b8ff9339..10e632339 100644
+--- a/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c
++++ b/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c
+@@ -1,4 +1,4 @@
+-#include <jpeg_cmdq.h>
++#include "jpeg_cmdq.h"
+ #include <cmdq_core.h>
+ #include <cmdq_reg.h>
+ 
+diff --git a/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c b/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c
+index 871d9b4e6..9f2a4e63d 100644
+--- a/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c
++++ b/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c
+@@ -37,7 +37,7 @@
+ #include <mach/sync_write.h>
+ 
+ #include <cmdq_core.h>
+-#include <jpeg_cmdq.h>
++#include "jpeg_cmdq.h"
+ /* ============================================================ */
+ 
+ /* #include <linux/uaccess.h> */
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b0c7e97d2..c2ace68bf 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1272,7 +1272,7 @@ out_nopush:
+ 	release_sock(sk);
+ 
+ 	if (copied + copied_syn)
+-		uid_stat_tcp_snd(current_uid(), copied + copied_syn);
++		uid_stat_tcp_snd(__kuid_val(current_uid()), copied + copied_syn);
+ 	return copied + copied_syn;
+ 
+ do_fault:
+@@ -1577,7 +1577,7 @@ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 	if (copied > 0) {
+ 		tcp_recv_skb(sk, seq, &offset);
+ 		tcp_cleanup_rbuf(sk, copied);
+-		uid_stat_tcp_rcv(current_uid(), copied);
++		uid_stat_tcp_rcv(__kuid_val(current_uid()), copied);
+ 	}
+ 	return copied;
+ }
+@@ -1984,7 +1984,7 @@ skip_copy:
+ 	release_sock(sk);
+ 
+ 	if (copied > 0)
+-		uid_stat_tcp_rcv(current_uid(), copied);
++		uid_stat_tcp_rcv(__kuid_val(current_uid()), copied);
+ 	return copied;
+ 
+ out:
+@@ -1994,7 +1994,7 @@ out:
+ recv_urg:
+ 	err = tcp_recv_urg(sk, msg, len, flags);
+ 	if (err > 0)
+-		uid_stat_tcp_rcv(current_uid(), err);
++		uid_stat_tcp_rcv(__kuid_val(current_uid()), err);
+ 	goto out;
+ 
+ recv_sndq:
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index ae075274f..5499fe919 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2241,7 +2241,7 @@ void tcp_v4_handle_retrans_time_by_uid(struct uid_err uid_e)
+                 continue;
+     
+             if(sk->sk_socket){
+-                if(SOCK_INODE(sk->sk_socket)->i_uid != skuid)
++                if(__kuid_val(SOCK_INODE(sk->sk_socket)->i_uid) != skuid)
+                     continue;
+                 else
+                     printk("[mmspb] tcp_v4_handle_retrans_time_by_uid socket uid(%d) match!",
+@@ -2299,7 +2299,7 @@ restart:
+                 continue;
+     
+             if(sk->sk_socket){
+-                if(SOCK_INODE(sk->sk_socket)->i_uid != skuid)
++                if(__kuid_val(SOCK_INODE(sk->sk_socket)->i_uid) != skuid)
+                     continue;
+                 else
+                     printk(KERN_INFO "SIOCKILLSOCK socket uid(%d) match!",
+diff --git a/Makefile b/Makefile
+index f3b814ea4..97ac9c8f0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -344,7 +344,7 @@ CHECK		= sparse
+ 
+ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
+ 		  -Wbitwise -Wno-return-void $(CF)
+-CFLAGS_MODULE   =
++CFLAGS_MODULE   = -fno-pic
+ AFLAGS_MODULE   =
+ LDFLAGS_MODULE  =
+ CFLAGS_KERNEL	=
+@@ -382,7 +382,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		   -fno-strict-aliasing -fno-common \
+ 		   -Werror-implicit-function-declaration \
+ 		   -Wno-format-security \
+-		   -fno-delete-null-pointer-checks
++		   -fno-delete-null-pointer-checks -fno-pic
+ KBUILD_AFLAGS_KERNEL :=
+ KBUILD_CFLAGS_KERNEL :=
+ KBUILD_AFLAGS   := -D__ASSEMBLY__

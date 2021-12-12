@@ -19,6 +19,13 @@ if [ "${CC:0:5}" != "gcc4-" ]; then
 	CROSS_COMPILE="gcc4-$CROSS_COMPILE"
 fi
 
+## Compiler: GCC 6
+#if [ "${CC:0:5}" != "gcc6-" ]; then
+#        CC="gcc6-$CC"
+#        HOSTCC="gcc6-gcc"
+#        CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+#fi
+
 # Source from amazon stock kernel
 _repository="linux-amazon-mediatek-mt8173-kernel-source"
 _commit="FireTVGen2-5.2.8.0-20210616"
@@ -26,6 +33,9 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	gcc10-extern_YYLOC_global_declaration.patch
+	fix-compile.patch
+	fix-compile-hacks.patch
 "
 builddir="$srcdir/$_repository-$_commit"
 
@@ -51,4 +61,9 @@ package() {
 }
 
 sha512sums="
+27da897c9950015dee187776b6bce3a025ef836de7d8312987c80b4fea6cc5580a8ca9484b75b7f2f63651f221939d252a7e8b960bbc30a29e5be69c942f8bdd  linux-amazon-sloane-FireTVGen2-5.2.8.0-20210616.tar.gz
+a1f522a43d48187bc9802071b98b092733bbb8449ec42294fcffc0b216245331e8ecdcc092775b1cfddfc3cc9bac0438316225874a8cb243ac453eb4a114083e  config-amazon-sloane.aarch64
+2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
+f79212429dc53a6a36bcb58c69abea5af8c98e7a627ccf1b599108a39cf639bd749e5e7449009edc232d115851ab526c581d8d2332202109172b8f2029f46137  fix-compile.patch
+875e5e4acbc2b6a75025358316b5b3bdaa62c93f6250e1c5f1e3c1b77a008caaf2705dc3cd7227508218020a2eb6ec49bf35e44a77b3f33277eb3afed0a4ce91  fix-compile-hacks.patch
 "
