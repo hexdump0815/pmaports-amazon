@@ -1,0 +1,52 @@
+--- a/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c
++++ b/drivers/misc/mediatek/jpeg/mt8173/jpeg_cmdq.c
+@@ -1,4 +1,4 @@
+-#include <jpeg_cmdq.h>
++#include "jpeg_cmdq.h"
+ #include <cmdq_core.h>
+ #include <cmdq_reg.h>
+ 
+--- a/include/trace/define_trace.h
++++ b/include/trace/define_trace.h
+@@ -76,7 +76,7 @@
+ /* Let the trace headers be reread */
+ #define TRACE_HEADER_MULTI_READ
+ 
+-#include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
++// #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
+ 
+ /* Make all open coded DECLARE_TRACE nops */
+ #undef DECLARE_TRACE
+--- a/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c
++++ b/drivers/misc/mediatek/jpeg/mt8173/jpeg_drv.c
+@@ -37,7 +37,7 @@
+ #include <mach/sync_write.h>
+ 
+ #include <cmdq_core.h>
+-#include <jpeg_cmdq.h>
++#include "jpeg_cmdq.h"
+ /* ============================================================ */
+ 
+ /* #include <linux/uaccess.h> */
+--- a/include/trace/ftrace.h
++++ b/include/trace/ftrace.h
+@@ -86,7 +86,7 @@
+ #define TRACE_EVENT_FLAGS(name, value)					\
+ 	__TRACE_EVENT_FLAGS(name, value)
+ 
+-#include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
++// #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
+ 
+ 
+ /*
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-mt8173.h
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-mt8173.h
+@@ -16,7 +16,7 @@
+ #define __PINCTRL_MTK_MT8173_H
+ 
+ #include <linux/pinctrl/pinctrl.h>
+-#include <pinctrl-mtk-common.h>
++#include "pinctrl-mtk-common.h"
+ 
+ static const struct mtk_desc_pin mtk_pins_mt8173[] = {
+ 	MTK_PIN(

@@ -1,0 +1,65 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+
+pkgname=linux-amazon-sloanenew
+pkgver=3.10.61
+pkgrel=1
+pkgdesc="Amazon Fire TV 2nd Generation (2015) kernel fork"
+arch="aarch64"
+_carch="arm64"
+_flavor="amazon-sloanenew"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gcc4 linux-headers xz"
+
+# Compiler: GCC 4 (doesn't compile with versions above GCC 4)
+if [ "${CC:0:5}" != "gcc4-" ]; then
+	CC="gcc4-$CC"
+	HOSTCC="gcc4-gcc"
+	CROSS_COMPILE="gcc4-$CROSS_COMPILE"
+fi
+
+## Compiler: GCC 6
+#if [ "${CC:0:5}" != "gcc6-" ]; then
+#        CC="gcc6-$CC"
+#        HOSTCC="gcc6-gcc"
+#        CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+#fi
+
+# Source from amazon stock kernel
+_repository="android_kernel_amazon_sloane"
+_commit="a8603ec397b55faa176c58d4a0bcb04d27ab5cb1"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/mt8173-dev/$_repository/archive/$_commit.tar.gz
+	$_config
+	compile-fixes.patch
+"
+builddir="$srcdir/$_repository-$_commit"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" "$_flavor"
+
+	# in case there will be modules at any time, make sure they get installed as well
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS" \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_MOD_STRIP=1 modules_install
+}
+
+sha512sums="
+be3cc188bd322f4ac16c29825bcbad86489a433f963be72e2d0fc01d41efd9f8a29ae68222fad27cbe05ba9cb1b57fb891a3e885e6480574a7dfa8f60bc649ca  linux-amazon-sloanenew-a8603ec397b55faa176c58d4a0bcb04d27ab5cb1.tar.gz
+cdf144afd28d684bbfd477a52ca26816a29f24e4592928c9686399090028b5f59ffdea2b216e2c708500b76e8fae431793ddf5b799cac636e54c1cf817406446  config-amazon-sloanenew.aarch64
+e382284d88c86d420905d413da26467f40ce51b5a77784f583733568c2981866dded2c52d1f53b61a6616664ec18f58e4fcd68e403b7975149980d6ccbf2d693  compile-fixes.patch
+"
