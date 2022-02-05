@@ -671,3 +671,77 @@ index b922b96cf..cb40d40c4 100644
  #include <linux/ion_drv.h>
  #include <linux/slab.h>
  #include <linux/mtk_ion.h>
+diff --git a/drivers/misc/mediatek/aee/ipanic/ipanic_rom.c b/drivers/misc/mediatek/aee/ipanic/ipanic_rom.c
+index 816520356..22d6784ba 100644
+--- a/drivers/misc/mediatek/aee/ipanic/ipanic_rom.c
++++ b/drivers/misc/mediatek/aee/ipanic/ipanic_rom.c
+@@ -188,11 +188,12 @@ static int ipanic_memory_buffer(void *data, unsigned char *buffer, size_t sz_buf
+ 
+ static int ipanic_alog_buffer(void *data, unsigned char *buffer, size_t sz_buf)
+ {
+-	int rc;
+-	rc = panic_dump_android_log(buffer, sz_buf, (unsigned long)data);
+-	if (rc < 0)
+-		rc = -1;
+-	return rc;
++//	int rc;
++//	rc = panic_dump_android_log(buffer, sz_buf, (unsigned long)data);
++//	if (rc < 0)
++//		rc = -1;
++//	return rc;
++	return 0;
+ }
+ 
+ inline int ipanic_func_write(fn_next next, void *data, int off, int total, int encrypt)
+diff --git a/drivers/misc/mediatek/power/mt8173/pmic_mt6397.c b/drivers/misc/mediatek/power/mt8173/pmic_mt6397.c
+index fb20754fd..a05b1fd0b 100644
+--- a/drivers/misc/mediatek/power/mt8173/pmic_mt6397.c
++++ b/drivers/misc/mediatek/power/mt8173/pmic_mt6397.c
+@@ -420,7 +420,8 @@ int PMIC_IMM_GetOneChannelValue(int dwChannel, int deCount, int trimd)
+ 	switch (dwChannel) {
+ 
+ 	case 0:
+-		r_val_temp = g_R_BAT_SENSE;
++		r_val_temp = 1;
++//		r_val_temp = g_R_BAT_SENSE;
+ 		adc_result = (adc_result_temp * r_val_temp * VOLTAGE_FULL_RANGE) / ADC_PRECISE;
+ 		break;
+ 	case 1:
+@@ -428,7 +429,8 @@ int PMIC_IMM_GetOneChannelValue(int dwChannel, int deCount, int trimd)
+ 		adc_result = (adc_result_temp * r_val_temp * VOLTAGE_FULL_RANGE) / ADC_PRECISE;
+ 		break;
+ 	case 2:
+-		r_val_temp = (((g_R_CHARGER_1 + g_R_CHARGER_2) * 100) / g_R_CHARGER_2);
++//		r_val_temp = (((g_R_CHARGER_1 + g_R_CHARGER_2) * 100) / g_R_CHARGER_2);
++		r_val_temp = 1;
+ 		adc_result = (adc_result_temp * r_val_temp * VOLTAGE_FULL_RANGE) / ADC_PRECISE;
+ 		break;
+ 	case 3:
+diff --git a/drivers/misc/mediatek/ssusb/mu3d/mt_usb.c b/drivers/misc/mediatek/ssusb/mu3d/mt_usb.c
+index b7eac3aa5..198db51ab 100644
+--- a/drivers/misc/mediatek/ssusb/mu3d/mt_usb.c
++++ b/drivers/misc/mediatek/ssusb/mu3d/mt_usb.c
+@@ -39,7 +39,7 @@ enum mu3d_status {
+ extern void wake_up_bat(void);
+ extern CHARGER_TYPE mt_charger_type_detection(void);
+ extern bool upmu_is_chr_det(void);
+-extern void BATTERY_SetUSBState(int usb_state);
++// extern void BATTERY_SetUSBState(int usb_state);
+ extern void upmu_interrupt_chrdet_int_en(u32 val);
+ extern u32 upmu_get_rgs_chrdet(void);
+ 
+@@ -217,10 +217,10 @@ void musb_sync_with_bat(struct musb *musb, int usb_state)
+ {
+ 	mu3d_dbg(K_INFO, "musb_sync_with_bat\n");
+ 
+-#ifndef CONFIG_MTK_FPGA
+-	BATTERY_SetUSBState(usb_state);
+-	wake_up_bat();
+-#endif
++//#ifndef CONFIG_MTK_FPGA
++//	BATTERY_SetUSBState(usb_state);
++//	wake_up_bat();
++//#endif
+ 
+ }
+ 
