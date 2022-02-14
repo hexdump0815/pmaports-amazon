@@ -3,7 +3,7 @@
 
 pkgname=linux-amazon-giza
 pkgver=3.18.19
-pkgrel=5
+pkgrel=1
 pkgdesc="Amazon Fire HD 8 (2016) kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -27,6 +27,14 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	disable-sound.patch
+	silence-syscall-logspam.patch
+	silence-thermal-logspam.patch
+	silence-battery-logspam.patch
+	silence-hotplug-logspam.patch
+	silence-misc-logspam.patch
+	fix-battery-data.patch
+	fake-mali-api-version.patch
 	gcc10-extern_YYLOC_global_declaration.patch
 "
 builddir="$srcdir/$_repository-$_commit"
@@ -55,6 +63,14 @@ package() {
 
 sha512sums="
 86ab2c49d22b07ad950e7c2b3b7e2b5781364d9f4da59ef15d717d40e73df54e952ddd36b7038b2c14e80271c61d799ecd19f092b5aa51a389411d51c52b4e07  linux-amazon-giza-Fire_HD8_6th_Gen-5.3.6.4-20201006.tar.gz
-72654c131026ae7bab5debd073949b37f087230953ffd476efd7a5a832640eb773766763a150a800b4ccd5bce1cedb8c65dd826f490f2952f2f12103bfdb2e3c  config-amazon-giza.aarch64
+cc89dcc04460d76ea72c98d9d2408b0b8a5f312f48f92ccf7b1b0426373ecb4d510f3d7acadc5f36c658ba32c9bfdf64c0d63fab7be15061a0267372b375419e  config-amazon-giza.aarch64
+aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
+102a4bb80d9d9736025594dd84ffa06c9d8c98c0fbe0a105975c366319882b64f0ac24db7b82259fee9675335fba8f1c0eeda9a936e392ee5e759d178bb4bfff  silence-syscall-logspam.patch
+c42a28b3edb6ff45871d5914839d15836373a494f2f48c9795ee5436673dec3154a8a10447178c89a20fe7ade731fe3bf29c555e01992df08554743cc56eaae3  silence-thermal-logspam.patch
+f92152ebeaeaf24c7e41b96d675590ca3301a0f4c5983d723de6f96e077234b293c2b82b0275ba444a6fa860ab7a339c5b3d3f83be1446c28feab714872601b8  silence-battery-logspam.patch
+ea07e862dc07fd8457eaf1660d958c2840ed00a6e1d086233db51b2d51268c3dbd55074bd6df6334cf4e8110125e2a473d85974d8dc4d88ae45e364b8d1186ca  silence-hotplug-logspam.patch
+e56f83408aee1dcf2f7c73a5e84f3abf5998651cefa0db8e0775c8328e5f93242eaca33feb930f1c820a6bf06bcf71e7a0dbab94c1a714cdbc5f32363f953fef  silence-misc-logspam.patch
+dbb327d6ebdf7210eac92b46a123be5e390fa60c53b979e9d944f1fa47bfb126188f98a4b40d2c8962887b0a4c2f5f72e9346b422679666a97b0ac203134a5b3  fix-battery-data.patch
+53e7f259df7e5489222078a0ee7863b27102f36dd57de975103988c82c4fdff522739e57c8c4828661b6693d06e14bdb6fe5e9069616c1de31242bc00622cbc7  fake-mali-api-version.patch
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
 "

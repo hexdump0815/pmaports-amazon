@@ -1,0 +1,13 @@
+diff --git a/drivers/misc/mediatek/gpu/mt8163/mali-r7p0-02rel0/drivers/gpu/arm/midgard/mali_kbase_uku.h b/drivers/misc/mediatek/gpu/mt8163/mali-r7p0-02rel0/drivers/gpu/arm/midgard/mali_kbase_uku.h
+index 81086775..cb09838e 100755
+--- a/drivers/misc/mediatek/gpu/mt8163/mali-r7p0-02rel0/drivers/gpu/arm/midgard/mali_kbase_uku.h
++++ b/drivers/misc/mediatek/gpu/mt8163/mali-r7p0-02rel0/drivers/gpu/arm/midgard/mali_kbase_uku.h
+@@ -42,7 +42,7 @@
+ #include "mali_kbase_gpuprops_types.h"
+ 
+ #define BASE_UK_VERSION_MAJOR 10
+-#define BASE_UK_VERSION_MINOR 0
++#define BASE_UK_VERSION_MINOR 6
+ 
+ struct kbase_uk_mem_alloc {
+ 	union uk_header header;
