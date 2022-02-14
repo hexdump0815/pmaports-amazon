@@ -1,0 +1,35 @@
+diff --git a/drivers/misc/mediatek/aee/aed/monitor_hang.c b/drivers/misc/mediatek/aee/aed/monitor_hang.c
+index 12fc7502b..cd37fa34b 100644
+--- a/drivers/misc/mediatek/aee/aed/monitor_hang.c
++++ b/drivers/misc/mediatek/aee/aed/monitor_hang.c
+@@ -433,7 +433,7 @@ static int hang_detect_thread(void *arg)
+ 				hang_detect_counter = hd_timeout + 4;
+ 				hd_detect_enabled = 0;
+ 			}
+-			LOGE("[Hang_Detect] hang_detect disabled.\n");
++//			LOGE("[Hang_Detect] hang_detect disabled.\n");
+ 		}
+ 
+ 		msleep((HD_INTER) * 1000);
+@@ -453,7 +453,7 @@ void aee_kernel_RT_Monitor_api(int lParam)
+ 		hd_detect_enabled = 0;
+ 		hang_detect_counter =
+ 			hd_timeout;
+-		LOGE("[Hang_Detect] hang_detect disabled\n");
++//		LOGE("[Hang_Detect] hang_detect disabled\n");
+ 	} else if (lParam > 0) {
+ 		hd_detect_enabled = 1;
+ 		hang_detect_counter =
+diff --git a/net/core/sock.c b/net/core/sock.c
+index c5c953acf..d30a43bd3 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1682,7 +1682,7 @@ kuid_t sock_i_uid(struct sock *sk)
+ 
+ 	/*mtk_net: fix kernel bug*/
+ 	if (!sk) {
+-		pr_info("sk == NULL for sock_i_uid\n");
++//		pr_info("sk == NULL for sock_i_uid\n");
+ 		return GLOBAL_ROOT_UID;
+ 	}
+ 
