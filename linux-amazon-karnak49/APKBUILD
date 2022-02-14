@@ -3,7 +3,7 @@
 
 pkgname=linux-amazon-karnak49
 pkgver=4.9.117
-pkgrel=5
+pkgrel=1
 pkgdesc="Amazon Fire HD 8 (2018) v4.9 kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -26,8 +26,8 @@ _commit="Fire_HD8_8th_Gen-7.3.2.1-20210725"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
+	linux4.2-gcc10-extern_YYLOC_global_declaration.patch
 	$_config
-	gcc10-extern_YYLOC_global_declaration.patch
 "
 builddir="$srcdir/$_repository-$_commit"
 _outdir="out"
@@ -55,6 +55,6 @@ package() {
 
 sha512sums="
 88275d70ea78210fbf0822583f5eec39eff1eb89e2f216c815c8b87fd1e4fbabc7a626b62fc520dd2650c585ac23263dc3ac395b59d09002ebb286df8688e4cc  linux-amazon-karnak49-Fire_HD8_8th_Gen-7.3.2.1-20210725.tar.gz
+eaf2e61fcb508cdd239b8fed209d2a09ecac77287f6b46d003918fdf1c6fa2ee63f7390f3ff7c49029b8ed6cbcdd81c7e9a4b1ece9f5060b6fc84e322bd47f41  linux4.2-gcc10-extern_YYLOC_global_declaration.patch
 b4785ac564b8d5d3fbadf323541f483967a40a4ca2b7cd394dab1fba6c5291bfde408de7206b224bf7bcf35cc40a35f8599475fa080a4c592d78f03ae6c5cbe4  config-amazon-karnak49.aarch64
-2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
 "
