@@ -1,0 +1,43 @@
+from: https://github.com/ggow/android_kernel_amazon_mustang/commit/42e7d5984972997a6b3726a2ebb6fe95a2f08d77
+
+From 42e7d5984972997a6b3726a2ebb6fe95a2f08d77 Mon Sep 17 00:00:00 2001
+From: Joel Stein <js@funkturm.net>
+Date: Sat, 13 Feb 2021 14:07:16 +0000
+Subject: [PATCH] dtsi: remove fstab from here
+
+---
+ arch/arm/boot/dts/mustang.dtsi | 21 ---------------------
+ 1 file changed, 21 deletions(-)
+
+diff --git a/arch/arm/boot/dts/mustang.dtsi b/arch/arm/boot/dts/mustang.dtsi
+index a769b8a1b..b957968f5 100644
+--- a/arch/arm/boot/dts/mustang.dtsi
++++ b/arch/arm/boot/dts/mustang.dtsi
+@@ -55,27 +55,6 @@
+ 		bootargs = "console=ttyS0,921600n1 root=/dev/ram initrd=0x44000200,0x200000";
+ 	};
+ 
+-        firmware: firmware {
+-                android: android {
+-                        compatible = "android,firmware";
+-                        fstab: fstab {
+-                                compatible = "android,fstab";
+-                                vendor {
+-                                        compatible = "android,vendor";
+-                                        dev =
+-                "/dev/block/platform/soc/11230000.mmc/by-name/vendor";
+-                                        type = "ext4";
+-                                        mnt_flags = "ro";
+-                                        #ifndef CONFIG_MTK_DM_VERITY_OFF
+-                                        fsmgr_flags = "wait,verify";
+-                                        #else
+-                                        fsmgr_flags = "wait";
+-                                        #endif
+-                                };
+-                        };
+-                };
+-        };
+-
+ 	mtcpufreq {
+ 		compatible = "mediatek,mt8163-cpufreq";
+ 		reg-ext-vproc-supply = <&vproc>;

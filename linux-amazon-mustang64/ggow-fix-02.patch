@@ -1,0 +1,31 @@
+from: https://github.com/ggow/android_kernel_amazon_mustang/commit/f1c06f6a71812d91b6824b4f40110c70853dce1a
+
+From f1c06f6a71812d91b6824b4f40110c70853dce1a Mon Sep 17 00:00:00 2001
+From: Joel Bacchus <joel.bacchus@protonmail.com>
+Date: Mon, 15 Feb 2021 13:54:08 +0000
+Subject: [PATCH] drivers: gpu: ged: fix-up mediatek sorcery
+
+---
+ drivers/misc/mediatek/gpu/ged/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/misc/mediatek/gpu/ged/Makefile b/drivers/misc/mediatek/gpu/ged/Makefile
+index 65345b944..8488fb5df 100644
+--- a/drivers/misc/mediatek/gpu/ged/Makefile
++++ b/drivers/misc/mediatek/gpu/ged/Makefile
+@@ -51,13 +51,13 @@ endif
+ 
+ 
+ ifneq ($(strip $(TARGET_BUILD_VARIANT)),)
+-ifneq ($(strip $(TARGET_BUILD_VARIANT)),eng)
++#ifneq ($(strip $(TARGET_BUILD_VARIANT)),eng)
+ VER:=user
+ ifeq ($(CONFIG_EXTREME_LOW_RAM), y)
+ ccflags-y += -DGED_LOG_SIZE_LIMITED
+ ccflags-y += -DGED_BUFFER_LOG_DISABLE
+ endif
+-endif
++#endif
+ endif
+ 
+ ccflags-y += -DMET_USER_EVENT_SUPPORT

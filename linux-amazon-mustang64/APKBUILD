@@ -27,9 +27,13 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/hexdump0815/$_repository/archive/$_commit.tar.gz
 	$_config
+	ggow-fix-01.patch
+	ggow-fix-02.patch
+	fix-compile.patch
 	pinctrl-mtk-common.patch
 	linux4.2-gcc10-extern_YYLOC_global_declaration.patch
 "
+#	fix-mali-build.patch - only needed for r20 mali
 builddir="$srcdir/$_repository-$_commit"
 _outdir="out"
 
@@ -56,7 +60,10 @@ package() {
 
 sha512sums="
 6b6f6d429b5214e0bdf80ffa6cf9f69d8761f5a0f84b4d166bd2be62b8dfed1e08ce1b03e5e836895cc139cd36bd7abf861cd57fdce2c9ce998ab75bdd6c6bdf  linux-amazon-mustang64-Fire_7_9th_Gen-7.3.2.1-20210725.tar.gz
-cf3e6edf5cc7a859b5866d68cc7335d7e0e0a576ba755db9738c76ce9a19f8c6ce2630f93b30358c1aef4110ffef634e2703eed793457e64e6ee4eead3e5f371  config-amazon-mustang64.aarch64
+a7861123dc2016ba241b46422f2780e4d7699471aa1eeaacec5802334fba888618949bb7968a5ece70316d9ebf519948f04898f2bb518c0610cd9b23b22a4da2  config-amazon-mustang64.aarch64
+3be26d48a93815ada09cf97f52b5c4c2280296e61b4b61c9918f4af673bbb759cd850f29576a4fe537dbf0d0a2f42dbb62476dfd3f56c0c22ae68a8eb65320dd  ggow-fix-01.patch
+44329040614bb5793d64afc73484d1c3e23c01354aba237cef8d66efa190450fd4e3ee8a25378e763a4bbd062029f5df384e7cdf6eb686d8dad6c3f4e0f0f2fe  ggow-fix-02.patch
+843ea5180f4c6becc270763bc16ee02b5a0370902a5952447df76ba94fb0a57d812d84dfbd249bfd308bfcc24ab70ad1aaedf8b12d7ff53b8e4e9dd24b7e075a  fix-compile.patch
 f1ce4270766e992bc2c03821cf2e62c60d987adb7f448d5ae7430f6eba4d0d6718f337c9f0d7e4db4097f5f49d5b49e653fcb6a1ee50fa8d07b625bb04a87484  pinctrl-mtk-common.patch
 eaf2e61fcb508cdd239b8fed209d2a09ecac77287f6b46d003918fdf1c6fa2ee63f7390f3ff7c49029b8ed6cbcdd81c7e9a4b1ece9f5060b6fc84e322bd47f41  linux4.2-gcc10-extern_YYLOC_global_declaration.patch
 "

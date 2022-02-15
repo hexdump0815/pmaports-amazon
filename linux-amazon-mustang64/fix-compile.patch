@@ -1,0 +1,20 @@
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -172,7 +172,7 @@
+ 	#ifdef CONFIG_ZONE_MOVABLE_CMA
+ 		zone_size[ZONE_HIGHMEM] = cma_base_pfn - max_low;
+ 		zone_size[ZONE_MOVABLE] = max_high - cma_base_pfn;
+-	#elif
++	#else
+ 		zone_size[ZONE_HIGHMEM] = max_high - max_low;
+ 	#endif
+ #endif
+@@ -204,7 +204,7 @@
+ 			unsigned long movable_start = max(start, cma_base_pfn);
+ 			zhole_size[ZONE_MOVABLE] -= end - movable_start;
+ 		}
+-	#elif
++	#else
+ 		if (end > max_low) {
+ 			unsigned long high_start = max(start, max_low);
+ 			zhole_size[ZONE_HIGHMEM] -= end - high_start;
