@@ -3,7 +3,7 @@
 
 pkgname=linux-amazon-mustang64
 pkgver=4.9.117
-pkgrel=4
+pkgrel=1
 pkgdesc="Amazon Fire 7 (2019) 64bit kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -56,7 +56,7 @@ package() {
 
 sha512sums="
 6b6f6d429b5214e0bdf80ffa6cf9f69d8761f5a0f84b4d166bd2be62b8dfed1e08ce1b03e5e836895cc139cd36bd7abf861cd57fdce2c9ce998ab75bdd6c6bdf  linux-amazon-mustang64-Fire_7_9th_Gen-7.3.2.1-20210725.tar.gz
-bc23fa5d7607fd666ebf5368a41ca0e27aec9e278497beb24fdfb507af5b5e9bb397fdbf23dcf8bde58080c4c114aa4f09f9022c06ac1e09afdeef398b5e446d  config-amazon-mustang64.aarch64
+cf3e6edf5cc7a859b5866d68cc7335d7e0e0a576ba755db9738c76ce9a19f8c6ce2630f93b30358c1aef4110ffef634e2703eed793457e64e6ee4eead3e5f371  config-amazon-mustang64.aarch64
 f1ce4270766e992bc2c03821cf2e62c60d987adb7f448d5ae7430f6eba4d0d6718f337c9f0d7e4db4097f5f49d5b49e653fcb6a1ee50fa8d07b625bb04a87484  pinctrl-mtk-common.patch
 eaf2e61fcb508cdd239b8fed209d2a09ecac77287f6b46d003918fdf1c6fa2ee63f7390f3ff7c49029b8ed6cbcdd81c7e9a4b1ece9f5060b6fc84e322bd47f41  linux4.2-gcc10-extern_YYLOC_global_declaration.patch
 "
