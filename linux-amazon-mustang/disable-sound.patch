@@ -1,0 +1,38 @@
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -723,6 +723,7 @@
+ config REGULATOR_SYM827
+ 	tristate "Silergy SYM827 regulator"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  Say y here to support for the Silergy SYM827.
+ 	  The SYM827 is a high efficiency synchronous step down
+--- a/drivers/usb/gadget/android.c
++++ b/drivers/usb/gadget/android.c
+@@ -1656,6 +1656,7 @@
+ 	struct usb_function_instance *f_aud_inst;
+ };
+ 
++#ifdef CONFIG_SOUND
+ static int audio_source_function_init(struct android_usb_function *f,
+ 			struct usb_composite_dev *cdev)
+ {
+@@ -1706,6 +1707,7 @@
+ 	.cleanup	= audio_source_function_cleanup,
+ 	.bind_config	= audio_source_function_bind_config,
+ };
++#endif
+ 
+ 
+ #ifdef CONFIG_MTK_ECCCI_C2K_TMP
+@@ -1854,7 +1856,9 @@
+ 	&rndis_function,
+ 	&mass_storage_function,
+ 	&accessory_function,
++#ifdef CONFIG_SOUND
+ 	&audio_source_function,
++#endif
+ #ifdef CONFIG_SND_RAWMIDI
+ 	&midi_function,
+ #endif
