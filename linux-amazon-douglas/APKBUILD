@@ -8,7 +8,7 @@
 
 pkgname=linux-amazon-douglas
 pkgver=3.18.19
-pkgrel=5
+pkgrel=8
 pkgdesc="Amazon Fire HD 8 (2017) kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -23,6 +23,10 @@ if [ "${CC:0:5}" != "gcc6-" ]; then
 	CC="gcc6-$CC"
 	HOSTCC="gcc6-gcc"
 	CROSS_COMPILE="gcc6-$CROSS_COMPILE"
+	LD="ld"
+	OBJCOPY="objcopy"
+	NM="nm"
+	AR="ar"
 fi
 
 # Source
@@ -68,7 +72,7 @@ package() {
 
 sha512sums="
 914f66c452d61f6e629d58e467111cbcdbb1121868d5b7da4f1b09c7f3457de9fdf67cca4ff6b03aa8293dd2eff02b14fd1c97f1273ada8bd5d522fa06f725a9  linux-amazon-douglas-Fire_HD8_7th_Gen-5.3.7.3-20210714.tar.gz
-8b1ceed9734a49baadedbcbbe9cfdf325290867ad1988f55ab872fc8f82ff97f52320c10ea268323a97bc880e0a72a9be78cb68e97a4311647993a254267b0c1  config-amazon-douglas.aarch64
+4ce0e57aa70b77a50af4095cee554cf6bdae602137c6eebfed9f2b2a48df7a5326dbf6bbbb1dc497fb5773c1805f10d4e95dd3dd99b758eef98191b33654e2e4  config-amazon-douglas.aarch64
 aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
 102a4bb80d9d9736025594dd84ffa06c9d8c98c0fbe0a105975c366319882b64f0ac24db7b82259fee9675335fba8f1c0eeda9a936e392ee5e759d178bb4bfff  silence-syscall-logspam.patch
 c42a28b3edb6ff45871d5914839d15836373a494f2f48c9795ee5436673dec3154a8a10447178c89a20fe7ade731fe3bf29c555e01992df08554743cc56eaae3  silence-thermal-logspam.patch
