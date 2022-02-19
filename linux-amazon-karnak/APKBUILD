@@ -3,7 +3,7 @@
 
 pkgname=linux-amazon-karnak
 pkgver=3.18.19
-pkgrel=2
+pkgrel=3
 pkgdesc="Amazon Fire HD 8 (2018) kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -30,13 +30,13 @@ source="
 	disable-sound.patch
 	silence-syscall-logspam.patch
 	silence-thermal-logspam.patch
+	silence-battery-logspam.patch
 	silence-hotplug-logspam.patch
 	silence-misc-logspam.patch
 	fake-mali-api-version.patch
+	fix-vxlan-compile.patch
 	gcc10-extern_YYLOC_global_declaration.patch
 "
-#	silence-battery-logspam.patch - needs to be redone, does not apply cleanly
-#	fix-battery-data.patch - not required for karnak
 builddir="$srcdir/$_repository-$_commit"
 _outdir="out"
 
@@ -63,12 +63,14 @@ package() {
 
 sha512sums="
 6914a49e103e84a5a31c6f654a82f5aae680c52335323768f8087a675c3f128af7fee9d4aabedb624eff76ca808e8fdc256a8abbfecdda6e7d893ea2022d65d2  linux-amazon-karnak-Fire_HD8_8th_Gen-6.3.1.5-20200221.tar.gz
-16f89fb3ee3d341993185d2b2c0629cf12c1e244b8d099d95c6e2540d238de19cbfccd33bb61ffcade654712e44ef142ab2b8e93f89aea4e187f203d12edae13  config-amazon-karnak.aarch64
+2d8fa37d3e59d0a47b16842c83fa938ca99e43dc7faec24520165819a7e5faf4f99ad85b1e64019aa34928ded662ae7e23b745f16777f76917764186ea431f2a  config-amazon-karnak.aarch64
 aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
 102a4bb80d9d9736025594dd84ffa06c9d8c98c0fbe0a105975c366319882b64f0ac24db7b82259fee9675335fba8f1c0eeda9a936e392ee5e759d178bb4bfff  silence-syscall-logspam.patch
 c42a28b3edb6ff45871d5914839d15836373a494f2f48c9795ee5436673dec3154a8a10447178c89a20fe7ade731fe3bf29c555e01992df08554743cc56eaae3  silence-thermal-logspam.patch
+2175bdc57e39b2a12080e0100de709d283bf01e113ee510ba94d791d32b969c22cad4a7cd93ed74bebe7bd24c5c1c61b72bf18ff33f16fb0c6a85d71afb50d4b  silence-battery-logspam.patch
 ea07e862dc07fd8457eaf1660d958c2840ed00a6e1d086233db51b2d51268c3dbd55074bd6df6334cf4e8110125e2a473d85974d8dc4d88ae45e364b8d1186ca  silence-hotplug-logspam.patch
 e56f83408aee1dcf2f7c73a5e84f3abf5998651cefa0db8e0775c8328e5f93242eaca33feb930f1c820a6bf06bcf71e7a0dbab94c1a714cdbc5f32363f953fef  silence-misc-logspam.patch
 53e7f259df7e5489222078a0ee7863b27102f36dd57de975103988c82c4fdff522739e57c8c4828661b6693d06e14bdb6fe5e9069616c1de31242bc00622cbc7  fake-mali-api-version.patch
+1d85892446a24d74853cf9fd910fb5fa105b8e071b63f34b6ad7c21ccf69c9fb633a442b48f77fa7c14ce8a7b05fe32c800037f02e5ade73a62bb231da16d4cc  fix-vxlan-compile.patch
 2b48f1bf0e3f70703d2cdafc47d5e615cc7c56c70bec56b2e3297d3fa4a7a1321d649a8679614553dde8fe52ff1051dae38d5990e3744c9ca986d92187dcdbeb  gcc10-extern_YYLOC_global_declaration.patch
 "

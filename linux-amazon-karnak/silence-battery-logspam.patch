@@ -26,15 +26,6 @@ diff --git a/drivers/power/mediatek/battery_common.c b/drivers/power/mediatek/ba
 index ed7a670e6..67ab52dc3 100644
 --- a/drivers/power/mediatek/battery_common.c
 +++ b/drivers/power/mediatek/battery_common.c
-@@ -2726,7 +2726,7 @@ static void battery_update(struct battery_data *bat_data)
- 	} else {		/* Only Battery */
- 
- 		bat_data->BAT_STATUS = POWER_SUPPLY_STATUS_DISCHARGING;
--		pr_notice("battery status: %s\n", "not charging");
-+//		pr_notice("battery status: %s\n", "not charging");
- 		if (BMT_status.bat_vol <= batt_cust_data.v_0percent_tracking)
- 			resetBatteryMeter = mt_battery_0Percent_tracking_check();
- 		else
 @@ -3269,11 +3269,11 @@ void mt_battery_GetBatteryData(void)
  	if (g_battery_soc_ready == false)
  		g_battery_soc_ready = true;
@@ -52,15 +43,6 @@ index ed7a670e6..67ab52dc3 100644
  }
  
  static PMU_STATUS mt_battery_CheckBatteryTemp(void)
-@@ -3934,7 +3934,7 @@ static void mt_battery_charger_detect_check(void)
- 		BMT_status.POSTFULL_charging_time = 0;
- 		chr_type_debounce = false;
- 
--		pr_notice("[BAT_thread]Cable out \r\n");
-+//		pr_notice("[BAT_thread]Cable out \r\n");
- 
- 		mt_usb_disconnect();
- 	}
 diff --git a/drivers/power/mediatek/battery_meter.c b/drivers/power/mediatek/battery_meter.c
 index 8b16fb9d3..7b11c949f 100644
 --- a/drivers/power/mediatek/battery_meter.c
@@ -76,19 +58,6 @@ index 8b16fb9d3..7b11c949f 100644
  
  		/* to avoid plug in cable without battery, then plug in battery to make hw soc = 100% */
  		/* if the difference bwtween ZCV and vbat is too large, using vbat instead ZCV */
-@@ -2607,9 +2607,9 @@ void oam_init(void)
- 		     && (vbat_capacity < batt_meter_cust_data.cust_poweron_max_vbat_tolrance))
- 		    || (abs(gFG_capacity_by_v - vbat_capacity) >
- 			batt_meter_cust_data.cust_poweron_delta_vbat_tolrance)) {
--			pr_debug(
--				 "[oam_init] fg_vbat=(%d), vbat=(%d), set fg_vat as vat\n",
--				 gFG_voltage, g_booting_vbat);
-+//			pr_debug(
-+//				 "[oam_init] fg_vbat=(%d), vbat=(%d), set fg_vat as vat\n",
-+//				 gFG_voltage, g_booting_vbat);
- 
- 			gFG_voltage = g_booting_vbat;
- 			gFG_capacity_by_v = vbat_capacity;
 @@ -2642,23 +2642,23 @@ void oam_init(void)
  	g_d_hw_ocv = oam_d0;
  

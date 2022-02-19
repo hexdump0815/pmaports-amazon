@@ -1,0 +1,11 @@
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -600,7 +600,7 @@
+ 
+ 	skb_gro_pull(skb, sizeof(*eh)); /* pull inner eth header */
+ 	skb_gro_postpull_rcsum(skb, eh, sizeof(*eh));
+-	pp = call_gro_receive(eth_gro_receive, head, skb);
++	pp = ptype->callbacks.gro_receive(head, skb);
+ 
+ out_unlock:
+ 	rcu_read_unlock();
