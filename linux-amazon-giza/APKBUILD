@@ -3,7 +3,7 @@
 
 pkgname=linux-amazon-giza
 pkgver=3.18.19
-pkgrel=3
+pkgrel=4
 pkgdesc="Amazon Fire HD 8 (2016) kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -63,7 +63,7 @@ package() {
 
 sha512sums="
 86ab2c49d22b07ad950e7c2b3b7e2b5781364d9f4da59ef15d717d40e73df54e952ddd36b7038b2c14e80271c61d799ecd19f092b5aa51a389411d51c52b4e07  linux-amazon-giza-Fire_HD8_6th_Gen-5.3.6.4-20201006.tar.gz
-cc89dcc04460d76ea72c98d9d2408b0b8a5f312f48f92ccf7b1b0426373ecb4d510f3d7acadc5f36c658ba32c9bfdf64c0d63fab7be15061a0267372b375419e  config-amazon-giza.aarch64
+9e4d85bca34d865d760f0827f6eb8fab6aa44ca911d586bd8d5ed3553b3180ed1cf0f02dac5a77d17f0074b389cf5d06775f7015e904f3475e367d956fefbc87  config-amazon-giza.aarch64
 aed9fd018a6367214dd00aad9c376c93ed356efbd74e21b49316ab0a21bc372a2077eeed8810f66464544c5bbc7bca6c46985ef42e6cb8f95ad94a1644130d1c  disable-sound.patch
 102a4bb80d9d9736025594dd84ffa06c9d8c98c0fbe0a105975c366319882b64f0ac24db7b82259fee9675335fba8f1c0eeda9a936e392ee5e759d178bb4bfff  silence-syscall-logspam.patch
 c42a28b3edb6ff45871d5914839d15836373a494f2f48c9795ee5436673dec3154a8a10447178c89a20fe7ade731fe3bf29c555e01992df08554743cc56eaae3  silence-thermal-logspam.patch
