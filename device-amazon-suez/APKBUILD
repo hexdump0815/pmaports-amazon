@@ -3,7 +3,7 @@
 pkgname=device-amazon-suez
 pkgdesc="Amazon Fire HD 10"
 pkgver=0.1
-pkgrel=3
+pkgrel=4
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -22,5 +22,5 @@ package() {
 
 
 sha512sums="
-232c180c518cf1998c097c256cd014f05244d131e02bde6799a15a06ed0394019f7c4abb559a096e071bd9bb253a4f6c7e672090cc68180a88b6d041f60db0b8  deviceinfo
+a329b77e0c5e943076b05ae375c4856b2c8b343796b768e0e2eb2108b9d9908311f53c82df3cf2c42d8d2c3147f845e2b401768c3ddaa2dd5416a8e421a7b9c2  deviceinfo
 "
