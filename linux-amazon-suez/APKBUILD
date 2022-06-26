@@ -4,7 +4,7 @@
 
 pkgname=linux-amazon-suez
 pkgver=3.18.19
-pkgrel=6
+pkgrel=8
 pkgdesc="Amazon Fire HD 10 kernel fork"
 arch="aarch64"
 _carch="arm64"
@@ -63,7 +63,7 @@ package() {
 
 sha512sums="
 8a608bb840ed70a1d81c685837d685c0d1518ed2f165cbaeb1ecedd0607dbd3fde1310658ac497bfb7471e16d8fa211c8acf91d10cfcd0a162447a2259bcb43a  linux-amazon-suez-Fire_HD10_7th_Gen-5.3.7.3-20210714.tar.gz
-8f17dee881cbff6cf8e55b571fb3a1da951ae33c7a072b8836a0a68c7043e9211669f4b2bd6fcb4df4a7cd6c2b984712699126f9495a3e63a5a9b243983ed4cc  config-amazon-suez.aarch64
+4d88ce527c48cce9c958bddf6948bd7c2626cd11b9ab3dbba7b7478b905b48cf062475595541b9aed1903542fd9d5f9bd705836e9e9eb98a08efa448f5f9613e  config-amazon-suez.aarch64
 85648675976ea315164075f2750f8bd6308637ccc5e17d95e2caf42e46a2502c424a10e738c79e9f7a1b832a8ba8cb245b056b48b2d5f76683425fee73ef03ec  silence-syscall-logspam.patch
 358137e8a491d936cff773f755ec695ca722b9612316bd7c9c9ab581f89bc16effb0861c964bf5205cb2e2945a7af1e1eae01bf6058e802db4f88e749e88882c  silence-hotplug-logspam.patch
 3c583d259bba913c01565015230d727cceb4c714d01c1eb11d704a5b59c013514a4f9d325cc87a8cfc183b78c42e966d489529c1caec5539d5c4f987693f7e09  silence-battery-logspam.patch
